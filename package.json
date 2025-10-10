@@ -13,6 +13,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "motion-v": "^1.7.2",
     "nuxt": "^4.1.3",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1"
@@ -20,11 +21,13 @@
   "devDependencies": {
     "@antfu/eslint-config": "^5.4.1",
     "@nuxt/eslint": "^1.9.0",
+    "@tailwindcss/vite": "^4.1.14",
     "eslint": "^9.37.0",
     "eslint-plugin-better-tailwindcss": "^3.7.9",
     "eslint-plugin-format": "^1.0.2",
     "lint-staged": "^16.2.3",
     "simple-git-hooks": "^2.13.1",
+    "tailwindcss": "^4.1.14",
     "typescript": "^5.9.3"
   },
   "simple-git-hooks": {
