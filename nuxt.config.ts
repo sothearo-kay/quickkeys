@@ -2,7 +2,11 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxt/eslint", "motion-v/nuxt"],
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/icon",
+    "motion-v/nuxt",
+  ],
 
   devtools: {
     enabled: true,
