@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/eslint",
     "@nuxt/icon",
+    "@nuxt/fonts",
     "@nuxtjs/color-mode",
     "motion-v/nuxt",
   ],
@@ -31,6 +32,25 @@ export default defineNuxtConfig({
       nuxt: {
         sortConfigKeys: true,
       },
+    },
+  },
+
+  fonts: {
+    families: [
+      {
+        name: "JetBrains Mono",
+        provider: "google",
+        weights: [400],
+      },
+      {
+        name: "Manrope",
+        provider: "google",
+        weights: [400, 500, 700],
+      },
+    ],
+    defaults: {
+      styles: ["normal"],
+      subsets: ["latin"],
     },
   },
 });
