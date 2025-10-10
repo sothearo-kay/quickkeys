@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/eslint",
     "@nuxt/icon",
+    "@nuxtjs/color-mode",
     "motion-v/nuxt",
   ],
 
@@ -13,6 +14,10 @@ export default defineNuxtConfig({
   },
 
   css: ["~/assets/css/main.css"],
+
+  colorMode: {
+    classSuffix: "",
+  },
 
   compatibilityDate: "2025-07-15",
 
