@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "@nuxtjs/color-mode",
     "@vueuse/nuxt",
+    "@pinia/nuxt",
     "motion-v/nuxt",
   ],
 
@@ -41,7 +42,7 @@ export default defineNuxtConfig({
       {
         name: "JetBrains Mono",
         provider: "google",
-        weights: [400],
+        weights: [600],
       },
       {
         name: "Manrope",
