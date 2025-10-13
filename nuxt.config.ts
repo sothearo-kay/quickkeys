@@ -42,7 +42,7 @@ export default defineNuxtConfig({
       {
         name: "JetBrains Mono",
         provider: "google",
-        weights: [400],
+        weights: [600],
       },
       {
         name: "Manrope",
@@ -56,4 +56,3 @@ export default defineNuxtConfig({
     },
   },
 });
-

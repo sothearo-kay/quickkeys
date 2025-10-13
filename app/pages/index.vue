@@ -1,5 +1,9 @@
+<script setup lang="ts"></script>
+
 <template>
-  <h1 class="text-center">
-    Quick keys
-  </h1>
+  <main class="container grid min-h-screen grid-rows-[max-content_1fr_max-content]">
+    <AppHeader />
+    <TypingTest />
+    <AppFooter />
+  </main>
 </template>
