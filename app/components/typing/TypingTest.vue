@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { motion } from "motion-v";
+
 const store = useTypingStore();
 await callOnce("typing-init", () => store.init());
 
@@ -46,14 +48,16 @@ function setActiveWordRef(
             wrong: isWordWrong(idx, currentWordIndex, store.word, extraLetters),
           }"
         >
-          <span
+          <motion.span
             v-if="idx === currentWordIndex"
+            layout-id="caret"
             class="caret"
             :class="{ blink: store.caretBlink }"
             :style="{ left: `${store.word.typedWord.length * 0.6}em` }"
+            :transition="{ type: 'tween', duration: 0.15, ease: [0.16, 1, 0.3, 1] }"
           >
             |
-          </span>
+          </motion.span>
 
           <span
             v-for="(char, charIdx) in word.split('')"
@@ -102,10 +106,8 @@ function setActiveWordRef(
 
 .caret {
   position: absolute;
-  top: 0;
   left: 0;
   color: var(--highlight);
-  transition: left 0.1s ease;
   margin-left: -0.3em;
 }
 
