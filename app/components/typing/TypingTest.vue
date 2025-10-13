@@ -3,6 +3,20 @@ const store = useTypingStore();
 await callOnce("typing-init", () => store.init());
 
 const currentWordIndex = computed(() => store.word.typedHistory.length);
+const extraLetters = computed(() => getExtraLetters(store.word));
+
+onMounted(() => {
+  window.addEventListener("keydown", handleKeyDown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("keydown", handleKeyDown);
+});
+
+function handleKeyDown(e: KeyboardEvent) {
+  e.preventDefault();
+  store.handleKeyPress(e.key, e.ctrlKey);
+}
 
 function setActiveWordRef(
   el: Element | ComponentPublicInstance | null,
@@ -12,23 +26,6 @@ function setActiveWordRef(
     store.activeWordRef = el as HTMLDivElement | null;
   }
 }
-
-const extraLetters = computed(() =>
-  getExtraLetters(store.word),
-);
-
-function handleKeyDown(e: KeyboardEvent) {
-  e.preventDefault();
-  store.handleKeyPress(e.key, e.ctrlKey);
-}
-
-onMounted(() => {
-  window.addEventListener("keydown", handleKeyDown);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("keydown", handleKeyDown);
-});
 </script>
 
 <template>
