@@ -38,9 +38,7 @@ onUnmounted(() => {
         {{ store.time.timer }}
       </div>
 
-      <div
-        class="flex h-[108px] flex-wrap items-center justify-start overflow-y-hidden text-[18pt] select-none"
-      >
+      <div class="flex h-[108px] flex-wrap items-center justify-start overflow-hidden text-[18pt] select-none">
         <div
           v-for="(word, idx) in store.word.wordList"
           :key="`${word}-${idx}`"

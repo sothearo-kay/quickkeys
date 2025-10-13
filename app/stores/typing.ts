@@ -44,7 +44,7 @@ export const useTypingStore = defineStore("typing", () => {
       return;
 
     const words = await loadWordList(preferences.type);
-    word.wordList = words;
+    word.wordList = shuffleArray(words);
     word.currWord = words[0] ?? "";
     time.timer = preferences.timeLimit;
   }
