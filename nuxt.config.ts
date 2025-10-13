@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "@nuxtjs/color-mode",
     "@vueuse/nuxt",
+    "@pinia/nuxt",
     "motion-v/nuxt",
   ],
 
@@ -55,3 +56,4 @@ export default defineNuxtConfig({
     },
   },
 });
+
