@@ -27,7 +27,6 @@ export default withNuxt(
       rules: {
         "node/prefer-global/process": "off",
         "better-tailwindcss/enforce-consistent-class-order": "warn",
-        "better-tailwindcss/no-unregistered-classes": "warn",
         "better-tailwindcss/no-duplicate-classes": "warn",
         "better-tailwindcss/no-unnecessary-whitespace": "warn",
       },
