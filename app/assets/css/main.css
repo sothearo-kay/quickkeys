@@ -9,6 +9,18 @@
   padding-inline: 1rem;
 }
 
+@utility kbd {
+  padding-inline: 0.375rem;
+  padding-block: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
 @theme {
   --font-sans: "Manrope", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "Menlo", "Consolas", monospace;
