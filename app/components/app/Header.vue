@@ -30,8 +30,12 @@ function setTimeLimit(time: number) {
   <motion.header
     :animate="{ opacity: store.isTyping ? 0 : 1 }"
     :transition="{ duration: 0.3 }"
-    class="flex items-center justify-end gap-6 py-6"
+    class="flex items-center justify-between gap-6 pt-6"
   >
+    <div class="text-xl font-bold text-primary">
+      quickkeys
+    </div>
+
     <div class="flex items-center gap-3">
       <button
         v-for="time in options.time"

@@ -7,8 +7,21 @@ await callOnce("typing-init", () => store.init());
 const currentWordIndex = computed(() => store.word.typedHistory.length);
 const extraLetters = computed(() => getExtraLetters(store.word));
 
-const isFocused = useWindowFocus();
+const windowFocused = useWindowFocus();
 const isMounted = useMounted();
+
+const { ready, start, stop } = useTimeout(1000, { controls: true, immediate: false });
+
+const isFocused = computed(() => windowFocused.value || !ready.value);
+
+watch(windowFocused, (focused) => {
+  if (focused) {
+    stop();
+  }
+  else {
+    start();
+  }
+});
 
 onMounted(() => {
   window.addEventListener("keydown", handleKeyDown);
@@ -27,7 +40,8 @@ function handleKeyDown(e: KeyboardEvent) {
 }
 
 function handleClick() {
-  isFocused.value = true;
+  stop();
+  window.focus();
 }
 
 function setActiveWordRef(
