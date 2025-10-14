@@ -9,7 +9,6 @@ const extraLetters = computed(() => getExtraLetters(store.word));
 
 const windowFocused = useWindowFocus();
 const isMounted = useMounted();
-
 const { ready, start, stop } = useTimeout(1000, { controls: true, immediate: false });
 
 const isFocused = computed(() => windowFocused.value || !ready.value);
@@ -23,12 +22,11 @@ watch(windowFocused, (focused) => {
   }
 });
 
-onMounted(() => {
-  window.addEventListener("keydown", handleKeyDown);
-});
+const stopKeyListener = onKeyStroke(true, handleKeyDown);
 
-onUnmounted(() => {
-  window.removeEventListener("keydown", handleKeyDown);
+watch(() => store.results.isFinished, (finished) => {
+  if (finished)
+    stopKeyListener();
 });
 
 function handleKeyDown(e: KeyboardEvent) {

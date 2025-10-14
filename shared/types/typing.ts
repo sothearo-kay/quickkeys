@@ -1,4 +1,4 @@
-export type WordListType = "sentences" | "words";
+export type TestMode = "sentences" | "words";
 
 export interface WordState {
   currWord: string;
@@ -13,9 +13,8 @@ export interface TimeState {
 }
 
 export interface PreferencesState {
-  theme: string;
   timeLimit: number;
-  type: WordListType;
+  mode: TestMode;
 }
 
 export interface ResultsState {
@@ -24,4 +23,5 @@ export interface ResultsState {
   correctChars: number;
   incorrectChars: number;
   isFinished: boolean;
+  showResults: boolean;
 }

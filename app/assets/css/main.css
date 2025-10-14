@@ -35,6 +35,11 @@
   --color-ring: var(--ring);
 }
 
+:root {
+  --border: oklch(0.9 0 0);
+  --ring: oklch(0.7 0 0);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
