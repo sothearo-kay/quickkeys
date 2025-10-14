@@ -17,8 +17,19 @@ export const useTypingStore = defineStore("typing", () => {
     timerId: null,
   });
 
+  const results = reactive<ResultsState>({
+    wpm: 0,
+    accuracy: 0,
+    correctChars: 0,
+    incorrectChars: 0,
+    isFinished: false,
+  });
+
   const activeWordRef = ref<HTMLDivElement | null>(null);
   const caretBlink = ref(true);
+  const hasStarted = ref(false);
+
+  const isTyping = computed(() => hasStarted.value && !results.isFinished);
 
   let blinkTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -50,11 +61,23 @@ export const useTypingStore = defineStore("typing", () => {
   }
 
   function setChar(char: string) {
-    word.typedWord += char;
+    // Limit extra characters to word length + 20
+    const maxLength = word.currWord.length + 20;
+    if (word.typedWord.length < maxLength) {
+      word.typedWord += char;
+    }
   }
 
   function removeChar() {
-    word.typedWord = word.typedWord.slice(0, -1);
+    if (word.typedWord.length > 0) {
+      word.typedWord = word.typedWord.slice(0, -1);
+    }
+    else if (word.typedHistory.length > 0) {
+      // Go back to the previous word
+      const previousWord = word.typedHistory.pop() || "";
+      word.typedWord = previousWord;
+      word.currWord = word.wordList[word.typedHistory.length] ?? "";
+    }
   }
 
   function appendTypedHistory() {
@@ -84,9 +107,92 @@ export const useTypingStore = defineStore("typing", () => {
     activeWord.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
-  function handleKeyPress(key: string, ctrlKey = false) {
-    if (!time.timer)
+  function startTimer() {
+    if (hasStarted.value || time.timerId)
       return;
+
+    hasStarted.value = true;
+
+    time.timerId = setInterval(() => {
+      time.timer--;
+
+      if (time.timer <= 0) {
+        stopTimer();
+        calculateResults();
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (time.timerId) {
+      clearInterval(time.timerId);
+      time.timerId = null;
+    }
+  }
+
+  function calculateResults() {
+    let correctChars = 0;
+    let incorrectChars = 0;
+
+    // Calculate correct and incorrect characters
+    for (let i = 0; i < word.typedHistory.length; i++) {
+      const typedWord = word.typedHistory[i] || "";
+      const actualWord = word.wordList[i] || "";
+
+      for (let j = 0; j < Math.max(typedWord.length, actualWord.length); j++) {
+        if (j < actualWord.length && typedWord[j] === actualWord[j]) {
+          correctChars++;
+        }
+        else if (j < typedWord.length) {
+          incorrectChars++;
+        }
+        else {
+          incorrectChars++;
+        }
+      }
+    }
+
+    const totalChars = correctChars + incorrectChars;
+    const accuracy = totalChars > 0 ? (correctChars / totalChars) * 100 : 0;
+
+    // WPM = (correct characters / 5) / time in minutes
+    // Standard word = 5 characters
+    const timeInMinutes = preferences.timeLimit / 60;
+    const wpm = Math.round((correctChars / 5) / timeInMinutes);
+
+    Object.assign(results, {
+      wpm,
+      accuracy: Math.round(accuracy),
+      correctChars,
+      incorrectChars,
+      isFinished: true,
+    });
+  }
+
+  function restart() {
+    stopTimer();
+    word.typedWord = "";
+    word.typedHistory = [];
+    word.currWord = word.wordList[0] ?? "";
+    time.timer = preferences.timeLimit;
+    hasStarted.value = false;
+    Object.assign(results, {
+      wpm: 0,
+      accuracy: 0,
+      correctChars: 0,
+      incorrectChars: 0,
+      isFinished: false,
+    });
+  }
+
+  function handleKeyPress(key: string, ctrlKey = false) {
+    if (results.isFinished)
+      return;
+
+    // Start timer on first keypress
+    if (!hasStarted.value && key.length === 1) {
+      startTimer();
+    }
 
     handleCaretBlink();
     scrollActiveWordIntoView();
@@ -112,9 +218,12 @@ export const useTypingStore = defineStore("typing", () => {
     preferences,
     word,
     time,
+    results,
     activeWordRef,
     caretBlink,
+    isTyping,
     init,
+    restart,
     handleKeyPress,
   };
 });

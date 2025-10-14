@@ -17,3 +17,11 @@ export interface PreferencesState {
   timeLimit: number;
   type: WordListType;
 }
+
+export interface ResultsState {
+  wpm: number;
+  accuracy: number;
+  correctChars: number;
+  incorrectChars: number;
+  isFinished: boolean;
+}

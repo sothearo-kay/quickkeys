@@ -1,11 +1,27 @@
 <script setup lang="ts">
-import { motion } from "motion-v";
+import { AnimatePresence, motion } from "motion-v";
 
 const store = useTypingStore();
 await callOnce("typing-init", () => store.init());
 
 const currentWordIndex = computed(() => store.word.typedHistory.length);
 const extraLetters = computed(() => getExtraLetters(store.word));
+
+const windowFocused = useWindowFocus();
+const isMounted = useMounted();
+
+const { ready, start, stop } = useTimeout(1000, { controls: true, immediate: false });
+
+const isFocused = computed(() => windowFocused.value || !ready.value);
+
+watch(windowFocused, (focused) => {
+  if (focused) {
+    stop();
+  }
+  else {
+    start();
+  }
+});
 
 onMounted(() => {
   window.addEventListener("keydown", handleKeyDown);
@@ -16,8 +32,16 @@ onUnmounted(() => {
 });
 
 function handleKeyDown(e: KeyboardEvent) {
+  if (!isFocused.value)
+    return;
+
   e.preventDefault();
   store.handleKeyPress(e.key, e.ctrlKey);
+}
+
+function handleClick() {
+  stop();
+  window.focus();
 }
 
 function setActiveWordRef(
@@ -31,9 +55,29 @@ function setActiveWordRef(
 </script>
 
 <template>
-  <div class="grid place-items-center">
-    <div class="space-y-2 font-mono">
-      <div class="ml-2 text-2xl font-bold text-highlight">
+  <div class="relative grid place-items-center">
+    <AnimatePresence>
+      <motion.div
+        v-if="isMounted && !isFocused"
+        key="overlay"
+        class="fixed inset-0 z-10 grid cursor-pointer place-items-center bg-background/50 backdrop-blur-lg"
+        :initial="{ opacity: 0 }"
+        :animate="{ opacity: 1 }"
+        :exit="{ opacity: 0 }"
+        :transition="{ duration: 0.2 }"
+        @click="handleClick"
+      >
+        <div class="flex flex-col items-center text-foreground/80">
+          <Icon name="lucide:mouse-pointer-click" class="size-8" />
+          <p class="mt-2 text-lg font-medium">
+            Click here or press any key to focus
+          </p>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+
+    <div class="font-mono transition-all duration-200" :class="{ 'blur-sm': isMounted && !isFocused }">
+      <div class="ml-[5px] text-2xl font-bold text-highlight">
         {{ store.time.timer }}
       </div>
 
@@ -83,7 +127,7 @@ function setActiveWordRef(
 
 <style scoped>
 .word {
-  margin-inline: 0.325rem;
+  margin-inline: 5px;
   position: relative;
 }
 

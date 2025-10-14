@@ -1,0 +1,89 @@
+:root {
+  --primary: oklch(0.5 0.15 220);
+  --highlight: oklch(0.5 0.2 15);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --border: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+.serika {
+  --primary: oklch(0.85 0.15 85);
+  --highlight: oklch(0.5 0.18 15);
+  --background: oklch(0.25 0.02 85);
+  --foreground: oklch(0.5 0.05 85);
+  --border: oklch(0.35 0.02 85);
+  --ring: oklch(0.5 0.05 85);
+}
+
+.nord {
+  --primary: oklch(0.75 0.1 220);
+  --highlight: oklch(0.6 0.15 10);
+  --background: oklch(0.3 0.02 220);
+  --foreground: oklch(0.8 0.02 220);
+  --border: oklch(0.4 0.02 220);
+  --ring: oklch(0.6 0.05 220);
+}
+
+.dracula {
+  --primary: oklch(0.7 0.15 330);
+  --highlight: oklch(0.6 0.18 15);
+  --background: oklch(0.22 0.02 285);
+  --foreground: oklch(0.85 0.02 285);
+  --border: oklch(0.35 0.03 285);
+  --ring: oklch(0.7 0.15 330);
+}
+
+.monokai {
+  --primary: oklch(0.7 0.15 160);
+  --highlight: oklch(0.6 0.18 350);
+  --background: oklch(0.2 0.02 60);
+  --foreground: oklch(0.85 0.02 60);
+  --border: oklch(0.3 0.02 60);
+  --ring: oklch(0.7 0.15 160);
+}
+
+.gruvbox {
+  --primary: oklch(0.7 0.12 140);
+  --highlight: oklch(0.55 0.16 25);
+  --background: oklch(0.25 0.03 60);
+  --foreground: oklch(0.8 0.05 60);
+  --border: oklch(0.35 0.03 60);
+  --ring: oklch(0.7 0.12 140);
+}
+
+.dark {
+  --primary: oklch(0.65 0.18 250);
+  --highlight: oklch(0.55 0.18 15);
+  --background: oklch(0.15 0 0);
+  --foreground: oklch(0.85 0 0);
+  --border: oklch(0.25 0 0);
+  --ring: oklch(0.65 0.18 250);
+}
+
+.ocean {
+  --primary: oklch(0.65 0.15 210);
+  --highlight: oklch(0.55 0.16 340);
+  --background: oklch(0.18 0.03 210);
+  --foreground: oklch(0.75 0.05 210);
+  --border: oklch(0.28 0.03 210);
+  --ring: oklch(0.65 0.15 210);
+}
+
+.forest {
+  --primary: oklch(0.65 0.15 150);
+  --highlight: oklch(0.55 0.16 30);
+  --background: oklch(0.16 0.03 150);
+  --foreground: oklch(0.75 0.05 150);
+  --border: oklch(0.26 0.03 150);
+  --ring: oklch(0.65 0.15 150);
+}
+
+.sunset {
+  --primary: oklch(0.7 0.15 60);
+  --highlight: oklch(0.55 0.18 350);
+  --background: oklch(0.2 0.03 30);
+  --foreground: oklch(0.85 0.05 30);
+  --border: oklch(0.3 0.03 30);
+  --ring: oklch(0.7 0.15 60);
+}
