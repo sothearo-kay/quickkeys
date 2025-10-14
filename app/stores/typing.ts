@@ -29,6 +29,8 @@ export const useTypingStore = defineStore("typing", () => {
   const caretBlink = ref(true);
   const hasStarted = ref(false);
 
+  const isTyping = computed(() => hasStarted.value && !results.isFinished);
+
   let blinkTimeout: ReturnType<typeof setTimeout> | null = null;
 
   async function loadWordList(type: string): Promise<string[]> {
@@ -59,7 +61,11 @@ export const useTypingStore = defineStore("typing", () => {
   }
 
   function setChar(char: string) {
-    word.typedWord += char;
+    // Limit extra characters to word length + 20
+    const maxLength = word.currWord.length + 20;
+    if (word.typedWord.length < maxLength) {
+      word.typedWord += char;
+    }
   }
 
   function removeChar() {
@@ -215,6 +221,7 @@ export const useTypingStore = defineStore("typing", () => {
     results,
     activeWordRef,
     caretBlink,
+    isTyping,
     init,
     restart,
     handleKeyPress,
