@@ -54,7 +54,15 @@ export const useTypingStore = defineStore("typing", () => {
   }
 
   function removeChar() {
-    word.typedWord = word.typedWord.slice(0, -1);
+    if (word.typedWord.length > 0) {
+      word.typedWord = word.typedWord.slice(0, -1);
+    }
+    else if (word.typedHistory.length > 0) {
+      // Go back to the previous word
+      const previousWord = word.typedHistory.pop() || "";
+      word.typedWord = previousWord;
+      word.currWord = word.wordList[word.typedHistory.length] ?? "";
+    }
   }
 
   function appendTypedHistory() {
