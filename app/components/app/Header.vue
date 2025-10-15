@@ -7,7 +7,7 @@ const colorMode = useColorMode();
 const options = {
   time: [15, 30, 60, 120],
   theme: [
-    "light",
+    "default",
     "dark",
     "serika",
     "vscode",
