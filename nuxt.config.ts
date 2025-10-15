@@ -16,10 +16,23 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: "en",
+      },
+      link: [
+        { rel: "icon", href: "/favicon.ico" },
+      ],
+    },
+  },
+
   css: ["~/assets/css/main.css"],
 
   colorMode: {
     classSuffix: "",
+    preference: "default",
+    storage: "cookie",
   },
 
   compatibilityDate: "2025-07-15",

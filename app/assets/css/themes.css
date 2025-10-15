@@ -1,5 +1,5 @@
 :root,
-.light {
+.default {
   --primary: oklch(0.55 0.2 230);
   --highlight: oklch(0.55 0.2 20);
   --background: oklch(0.99 0 0);
