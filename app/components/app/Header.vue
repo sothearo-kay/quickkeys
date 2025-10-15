@@ -64,77 +64,75 @@ async function setMode(mode: TestMode) {
 </script>
 
 <template>
-  <div>
-    <motion.header
-      :animate="{ opacity: store.isTyping ? 0 : 1 }"
-      :transition="{ duration: 0.3 }"
-      class="flex flex-col gap-2 pt-6"
-    >
-      <div class="flex items-baseline justify-between gap-6">
-        <div class="text-2xl font-bold text-primary">
-          quickkeys
-        </div>
-
-        <div class="flex items-center gap-3 text-sm">
-          <div class="flex items-center gap-2">
-            <button
-              v-for="mode in options.mode"
-              :key="mode"
-              class="font-medium capitalize transition-colors hover:text-primary"
-              :class="getOptionClass(store.preferences.mode === mode)"
-              @click="setMode(mode)"
-            >
-              {{ mode }}
-            </button>
-          </div>
-
-          <div class="h-4 w-px bg-border" aria-hidden="true" />
-
-          <div class="flex items-center gap-3">
-            <button
-              v-for="time in options.time"
-              :key="time"
-              class="font-medium transition-colors hover:text-primary"
-              :class="getOptionClass(store.preferences.timeLimit === time)"
-              @click="setTimeLimit(time)"
-            >
-              {{ time }}
-            </button>
-          </div>
-        </div>
+  <motion.header
+    :animate="{ opacity: store.isTyping ? 0 : 1 }"
+    :transition="{ duration: 0.3 }"
+    class="relative z-20 flex flex-col gap-2 pt-6"
+  >
+    <div class="flex items-baseline justify-between gap-6">
+      <div class="text-2xl font-bold text-primary">
+        quickkeys
       </div>
 
-      <div class="flex justify-end">
-        <div class="flex flex-wrap items-center gap-2 text-sm">
+      <div class="flex items-center gap-4 text-sm">
+        <div class="flex items-center gap-2">
           <button
-            v-for="theme in options.theme"
-            :key="theme"
+            v-for="mode in options.mode"
+            :key="mode"
             class="font-medium capitalize transition-colors hover:text-primary"
-            :class="getOptionClass(colorMode.preference === theme)"
-            @click="setTheme(theme, $event)"
+            :class="getOptionClass(store.preferences.mode === mode)"
+            @click="setMode(mode)"
           >
-            {{ theme }}
+            {{ mode }}
+          </button>
+        </div>
+
+        <div class="h-4 w-px bg-border" aria-hidden="true" />
+
+        <div class="flex items-center gap-2">
+          <button
+            v-for="time in options.time"
+            :key="time"
+            class="font-medium transition-colors hover:text-primary"
+            :class="getOptionClass(store.preferences.timeLimit === time)"
+            @click="setTimeLimit(time)"
+          >
+            {{ time }}
           </button>
         </div>
       </div>
-    </motion.header>
+    </div>
 
-    <AnimatePresence>
-      <motion.div
-        v-if="isTransitioning"
-        key="theme-transition"
-        class="pointer-events-none fixed inset-0 z-50"
-        :class="transitionTheme"
-        :initial="{
-          clipPath: `circle(0px at ${clickPosition.x}px ${clickPosition.y}px)`,
-        }"
-        :animate="{
-          clipPath: `circle(${endRadius}px at ${clickPosition.x}px ${clickPosition.y}px)`,
-        }"
-        :transition="{ type: 'tween', duration: 0.6, ease: 'easeInOut' }"
-      >
-        <div class="h-full w-full bg-background" />
-      </motion.div>
-    </AnimatePresence>
-  </div>
+    <div class="flex justify-end">
+      <div class="flex flex-wrap items-center gap-2 text-sm">
+        <button
+          v-for="theme in options.theme"
+          :key="theme"
+          class="font-medium capitalize transition-colors hover:text-primary"
+          :class="getOptionClass(colorMode.preference === theme)"
+          @click="setTheme(theme, $event)"
+        >
+          {{ theme }}
+        </button>
+      </div>
+    </div>
+  </motion.header>
+
+  <AnimatePresence>
+    <motion.div
+      v-if="isTransitioning"
+      key="theme-transition"
+      class="pointer-events-none fixed inset-0 z-50"
+      :class="transitionTheme"
+      :initial="{
+        clipPath: `circle(0px at ${clickPosition.x}px ${clickPosition.y}px)`,
+      }"
+      :animate="{
+        clipPath: `circle(${endRadius}px at ${clickPosition.x}px ${clickPosition.y}px)`,
+      }"
+      :transition="{ type: 'tween', duration: 0.6, ease: 'easeInOut' }"
+    >
+      <div class="h-full w-full bg-background" />
+    </motion.div>
+  </AnimatePresence>
 </template>
