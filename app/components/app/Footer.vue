@@ -5,12 +5,17 @@ const store = useTypingStore();
 </script>
 
 <template>
-  <motion.footer :animate="{ opacity: store.isTyping ? 0 : 1 }" :transition="{ duration: 0.3 }">
-    <div class="mb-16 flex items-center justify-center gap-2 text-sm text-foreground/60">
+  <motion.footer
+    :animate="{ opacity: store.isTyping ? 0 : 1 }"
+    :transition="{ duration: 0.3 }"
+    class="relative z-20"
+  >
+    <div class="mb-16 flex items-center justify-center gap-2 text-sm text-muted">
       <kbd class="kbd">Tab</kbd>
-      <span>+</span>
+      <span>&plus;</span>
       <kbd class="kbd">Enter</kbd>
-      <span>- restart test</span>
+      <span>&minus;</span>
+      <span>restart test</span>
     </div>
   </motion.footer>
 </template>

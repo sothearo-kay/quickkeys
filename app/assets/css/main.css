@@ -31,13 +31,15 @@
   --color-highlight: var(--highlight);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-border: var(--border);
-  --color-ring: var(--ring);
+  --color-foreground-muted: oklch(from var(--foreground) l c h / 0.8);
+  --color-muted: oklch(from var(--foreground) l c h / 0.6);
+  --color-border: oklch(from var(--foreground) l c h / 0.2);
+  --color-overlay: oklch(from var(--background) l c h / 0.5);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
