@@ -34,7 +34,7 @@ const endRadius = computed(() => {
 });
 
 function getOptionClass(isActive: boolean) {
-  return isActive ? "text-primary" : "text-foreground/60";
+  return isActive ? "text-primary" : "text-muted";
 }
 
 function setTimeLimit(time: number) {
@@ -88,7 +88,7 @@ async function setMode(mode: TestMode) {
             </button>
           </div>
 
-          <div class="h-4 w-px bg-foreground/20" />
+          <div class="h-4 w-px bg-border" aria-hidden="true" />
 
           <div class="flex items-center gap-3">
             <button

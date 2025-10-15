@@ -31,8 +31,6 @@ export const useTypingStore = defineStore("typing", () => {
 
   const isTyping = computed(() => hasStarted.value && !results.isFinished);
 
-  let blinkTimeout: ReturnType<typeof setTimeout> | null = null;
-
   async function loadWordList(type: string): Promise<string[]> {
     try {
       const module = await import(`~/data/wordlists/${type}.json`);
@@ -82,6 +80,14 @@ export const useTypingStore = defineStore("typing", () => {
     { immediate: false },
   );
 
+  const { start: startBlinkTimeout, stop: stopBlinkTimeout } = useTimeoutFn(
+    () => {
+      caretBlink.value = true;
+    },
+    500,
+    { immediate: false },
+  );
+
   function startTimer() {
     if (hasStarted.value || isActive.value)
       return;
@@ -92,10 +98,7 @@ export const useTypingStore = defineStore("typing", () => {
 
   function stopTimer() {
     pauseTimer();
-    if (blinkTimeout) {
-      clearTimeout(blinkTimeout);
-      blinkTimeout = null;
-    }
+    stopBlinkTimeout();
   }
 
   function calculateResults() {
@@ -194,13 +197,9 @@ export const useTypingStore = defineStore("typing", () => {
     if (results.isFinished)
       return;
 
-    if (blinkTimeout)
-      clearTimeout(blinkTimeout);
-
+    stopBlinkTimeout();
     caretBlink.value = false;
-    blinkTimeout = setTimeout(() => {
-      caretBlink.value = true;
-    }, 500);
+    startBlinkTimeout();
   }
 
   function scrollActiveWordIntoView() {

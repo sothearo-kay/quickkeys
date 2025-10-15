@@ -58,14 +58,14 @@ function setActiveWordRef(
       <motion.div
         v-if="isMounted && !isFocused"
         key="overlay"
-        class="fixed inset-0 z-10 grid cursor-pointer place-items-center bg-background/50 backdrop-blur-lg"
+        class="fixed inset-0 z-10 grid cursor-pointer place-items-center bg-overlay backdrop-blur-lg"
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 1 }"
         :exit="{ opacity: 0 }"
         :transition="{ duration: 0.2 }"
         @click="handleClick"
       >
-        <div class="flex flex-col items-center text-foreground/80">
+        <div class="flex flex-col items-center text-foreground-muted">
           <Icon name="lucide:mouse-pointer-click" class="size-8" />
           <p class="mt-2 text-lg font-medium">
             Click here or press any key to focus
@@ -74,12 +74,12 @@ function setActiveWordRef(
       </motion.div>
     </AnimatePresence>
 
-    <div class="font-mono transition-all duration-200" :class="{ 'blur-sm': isMounted && !isFocused }">
+    <div class="space-y-1 font-mono transition-all duration-200" :class="{ 'blur-sm': isMounted && !isFocused }">
       <div class="ml-[5px] text-2xl font-bold text-highlight">
         {{ store.time.timer }}
       </div>
 
-      <div class="flex h-[108px] flex-wrap items-center justify-start overflow-hidden text-[18pt] select-none">
+      <div class="flex h-[calc(var(--font-size)*1.5*3)] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) select-none [--font-size:18pt]">
         <div
           v-for="(word, idx) in store.word.wordList"
           :key="`${word}-${idx}`"
@@ -98,7 +98,7 @@ function setActiveWordRef(
             :style="{ left: `${store.word.typedWord.length * 0.6}em` }"
             :transition="{ type: 'tween', duration: 0.15, ease: [0.16, 1, 0.3, 1] }"
           >
-            |
+            &vert;
           </motion.span>
 
           <span
