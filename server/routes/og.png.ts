@@ -2,17 +2,18 @@ import { Buffer } from "node:buffer";
 import { SITE_DESCRIPTION, SITE_NAME } from "#shared/constants";
 import { ImageResponse } from "@vercel/og";
 
-const OG_BORDER_SVG = "<svg width=\"1120\" height=\"550\" viewBox=\"0 0 1120 550\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M 2 29 L 2 2 L 29 2\" stroke=\"#000000\" stroke-width=\"2.5\" fill=\"none\" stroke-opacity=\"0.2\" stroke-linecap=\"square\"/><line x1=\"41\" y1=\"2\" x2=\"1085\" y2=\"2\" stroke=\"#000000\" stroke-width=\"2.5\" stroke-opacity=\"0.2\" stroke-dasharray=\"18 12\" stroke-linecap=\"square\"/><path d=\"M 1091 2 L 1118 2 L 1118 29\" stroke=\"#000000\" stroke-width=\"2.5\" fill=\"none\" stroke-opacity=\"0.2\" stroke-linecap=\"square\"/><line x1=\"1118\" y1=\"41\" x2=\"1118\" y2=\"515\" stroke=\"#000000\" stroke-width=\"2.5\" stroke-opacity=\"0.2\" stroke-dasharray=\"18 12\" stroke-linecap=\"square\"/><path d=\"M 1118 521 L 1118 548 L 1091 548\" stroke=\"#000000\" stroke-width=\"2.5\" fill=\"none\" stroke-opacity=\"0.2\" stroke-linecap=\"square\"/><line x1=\"1079\" y1=\"548\" x2=\"35\" y2=\"548\" stroke=\"#000000\" stroke-width=\"2.5\" stroke-opacity=\"0.2\" stroke-dasharray=\"18 12\" stroke-linecap=\"square\"/><path d=\"M 29 548 L 2 548 L 2 521\" stroke=\"#000000\" stroke-width=\"2.5\" fill=\"none\" stroke-opacity=\"0.2\" stroke-linecap=\"square\"/><line x1=\"2\" y1=\"509\" x2=\"2\" y2=\"35\" stroke=\"#000000\" stroke-width=\"2.5\" stroke-opacity=\"0.2\" stroke-dasharray=\"18 12\" stroke-linecap=\"square\"/></svg>";
-const LOGO_SVG = "<svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"3\" y=\"3\" width=\"26\" height=\"26\" rx=\"5\" fill=\"#3b82f6\"/><path d=\"M 19.5 9 L 11 16 L 14.5 16 L 14.5 17.5 L 11.5 23 L 20 16 L 16.5 16 L 16.5 14.5 Z\" fill=\"#ffffff\"/></svg>";
-
 export default defineEventHandler(async (_event) => {
-  const [manropeFontSemiBold, manropeFontBold] = await Promise.all([
+  const storage = useStorage("assets:server");
+
+  const [ogBorderSvg, logoSvg, manropeFontSemiBold, manropeFontBold] = await Promise.all([
+    storage.getItem<string>("og-border.svg"),
+    storage.getItem<string>("logo.svg"),
     loadGoogleFont("Manrope:wght@600", SITE_DESCRIPTION),
     loadGoogleFont("Manrope:wght@700", `${SITE_NAME} Typing Speed Test`),
   ]);
 
-  const ogBorderDataUri = `data:image/svg+xml;base64,${Buffer.from(OG_BORDER_SVG).toString("base64")}`;
-  const logoDataUri = `data:image/svg+xml;base64,${Buffer.from(LOGO_SVG).toString("base64")}`;
+  const ogBorderDataUri = `data:image/svg+xml;base64,${Buffer.from(ogBorderSvg!).toString("base64")}`;
+  const logoDataUri = `data:image/svg+xml;base64,${Buffer.from(logoSvg!).toString("base64")}`;
 
   return new ImageResponse(
     {
