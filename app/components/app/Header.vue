@@ -75,7 +75,7 @@ async function setMode(mode: TestMode) {
         {{ SITE_NAME }}
       </div>
 
-      <div class="flex items-center gap-4 text-sm">
+      <div class="flex items-center gap-4 text-sm tracking-wide">
         <div class="flex items-center gap-2">
           <button
             v-for="mode in options.modes"
@@ -104,8 +104,8 @@ async function setMode(mode: TestMode) {
       </div>
     </div>
 
-    <div class="ml-60 flex justify-end">
-      <div class="flex flex-wrap items-center justify-end gap-2 text-sm">
+    <div class="ml-50 flex justify-end">
+      <div class="flex flex-wrap items-center justify-end gap-2 text-sm tracking-wide">
         <button
           v-for="theme in options.themes"
           :key="theme"

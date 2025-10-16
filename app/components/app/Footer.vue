@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AUTHOR } from "#shared/constants";
 import { motion } from "motion-v";
 
 const store = useTypingStore();
@@ -8,14 +9,28 @@ const store = useTypingStore();
   <motion.footer
     :animate="{ opacity: store.isTyping ? 0 : 1 }"
     :transition="{ duration: 0.3 }"
-    class="relative z-20"
+    class="relative z-20 flex flex-col gap-10"
   >
-    <div class="mb-16 flex items-center justify-center gap-2 text-sm text-muted">
+    <div class="flex items-center justify-center gap-2 text-sm tracking-wide text-muted">
       <kbd class="kbd">Tab</kbd>
       <span>&plus;</span>
       <kbd class="kbd">Enter</kbd>
       <span>&minus;</span>
       <span>restart test</span>
+    </div>
+
+    <div class="mb-16 flex items-center justify-center gap-4 text-sm tracking-wide text-muted">
+      <a
+        href="https://github.com/sothearo-kay/quickkeys"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-2 transition-colors hover:text-primary"
+      >
+        <Icon name="lucide:code-xml" class="size-4" />
+        <span>Source</span>
+      </a>
+      <span>&middot;</span>
+      <span>Created by {{ AUTHOR }}</span>
     </div>
   </motion.footer>
 </template>
