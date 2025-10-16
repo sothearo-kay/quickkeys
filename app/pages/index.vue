@@ -22,7 +22,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="container grid min-h-screen grid-rows-[max-content_1fr_max-content]">
+  <main class="container grid min-h-dvh grid-rows-[auto_1fr_auto]">
     <AppHeader />
     <TypingResult v-if="store.results.showResults" />
     <TypingTest v-else />

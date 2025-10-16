@@ -9,7 +9,7 @@ const store = useTypingStore();
   <motion.footer
     :animate="{ opacity: store.isTyping ? 0 : 1 }"
     :transition="{ duration: 0.3 }"
-    class="relative z-20 flex flex-col gap-10"
+    class="relative z-20 flex flex-col gap-10 pb-16"
   >
     <div class="flex items-center justify-center gap-2 text-sm tracking-wide text-muted">
       <kbd class="kbd">Tab</kbd>
@@ -19,7 +19,7 @@ const store = useTypingStore();
       <span>restart test</span>
     </div>
 
-    <div class="mb-16 flex items-center justify-center gap-4 text-sm tracking-wide text-muted">
+    <div class="flex items-center justify-center gap-4 text-sm tracking-wide text-muted">
       <a
         href="https://github.com/sothearo-kay/quickkeys"
         target="_blank"

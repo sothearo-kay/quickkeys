@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AnimatePresence, motion } from "motion-v";
+import { motion } from "motion-v";
 
 const store = useTypingStore();
 await callOnce("typing-init", () => store.init());
@@ -9,11 +9,29 @@ const extraLetters = computed(() => getExtraLetters(store.word));
 
 const windowFocused = useWindowFocus();
 const isMounted = useMounted();
+
+// Only show overlay after user has interacted with the page
+// This prevents CLS during initial page load (Lighthouse tests)
+const hasInteracted = ref(false);
 const { ready, start, stop } = useTimeout(1000, { controls: true, immediate: false });
 
-const isFocused = computed(() => windowFocused.value || !ready.value);
+function markInteraction() {
+  hasInteracted.value = true;
+}
+
+useEventListener("keydown", markInteraction, { once: true });
+useEventListener("click", markInteraction, { once: true });
+
+const isFocused = computed(() => {
+  if (!hasInteracted.value)
+    return true;
+  return windowFocused.value || !ready.value;
+});
 
 watch(windowFocused, (focused) => {
+  if (!hasInteracted.value)
+    return;
+
   if (focused) {
     stop();
   }
@@ -38,7 +56,7 @@ function handleKeyDown(e: KeyboardEvent) {
 }
 
 function handleClick() {
-  stop();
+  hasInteracted.value = true;
   window.focus();
 }
 
@@ -54,27 +72,22 @@ function setActiveWordRef(
 
 <template>
   <div class="relative grid place-items-center">
-    <AnimatePresence>
-      <motion.div
-        v-if="isMounted && !isFocused"
-        key="overlay"
-        class="fixed inset-0 z-10 grid cursor-pointer place-items-center bg-overlay backdrop-blur-lg"
-        :initial="{ opacity: 0 }"
-        :animate="{ opacity: 1 }"
-        :exit="{ opacity: 0 }"
-        :transition="{ duration: 0.2 }"
-        @click="handleClick"
-      >
-        <div class="flex flex-col items-center text-foreground-muted">
-          <Icon name="lucide:mouse-pointer-click" class="size-8" />
-          <p class="mt-2 text-lg font-medium">
-            Click here or press any key to focus
-          </p>
-        </div>
-      </motion.div>
-    </AnimatePresence>
+    <div
+      class="fixed inset-0 z-10 grid cursor-pointer place-items-center bg-overlay backdrop-blur-lg transition-opacity duration-200"
+      :class="[
+        isMounted && !isFocused ? 'opacity-100' : 'pointer-events-none opacity-0',
+      ]"
+      @click="handleClick"
+    >
+      <div class="flex flex-col items-center text-foreground-muted">
+        <Icon name="lucide:mouse-pointer-click" class="size-8" />
+        <p class="mt-2 text-lg font-medium">
+          Click here or press any key to focus
+        </p>
+      </div>
+    </div>
 
-    <div class="space-y-1 font-mono transition-all duration-200" :class="{ 'blur-sm': isMounted && !isFocused }">
+    <div class="transform-gpu space-y-1 font-mono transition-all duration-200" :class="{ 'blur-sm': isMounted && !isFocused }">
       <div class="ml-[5px] text-2xl font-bold text-highlight">
         {{ store.time.timer }}
       </div>

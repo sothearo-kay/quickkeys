@@ -90,7 +90,7 @@ async function setMode(mode: TestMode) {
 
         <div class="h-4 w-px bg-border" aria-hidden="true" />
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2.5">
           <button
             v-for="time in options.times"
             :key="time"
