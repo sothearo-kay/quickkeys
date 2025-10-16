@@ -9,7 +9,7 @@ const store = useTypingStore();
   <motion.footer
     :animate="{ opacity: store.isTyping ? 0 : 1 }"
     :transition="{ duration: 0.3 }"
-    class="relative z-20 flex flex-col gap-10 pb-16"
+    class="relative z-20 flex flex-col gap-8 pb-16"
   >
     <div class="flex items-center justify-center gap-2 text-sm tracking-wide text-muted">
       <kbd class="kbd">Tab</kbd>
