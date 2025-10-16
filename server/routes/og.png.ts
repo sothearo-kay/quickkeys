@@ -1,13 +1,19 @@
+import { Buffer } from "node:buffer";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { SITE_DESCRIPTION, SITE_NAME } from "#shared/constants";
 import { ImageResponse } from "@vercel/og";
 
-export default defineEventHandler(async (event) => {
-  const [manropeFontSemiBold, manropeFontBold] = await Promise.all([
+export default defineEventHandler(async (_event) => {
+  const [manropeFontSemiBold, manropeFontBold, ogBorderSvg, logoSvg] = await Promise.all([
     loadGoogleFont("Manrope:wght@600", SITE_DESCRIPTION),
     loadGoogleFont("Manrope:wght@700", `${SITE_NAME} Typing Speed Test`),
+    readFile(join(process.cwd(), "public/og-border.svg"), "utf-8"),
+    readFile(join(process.cwd(), "public/icons/logo.svg"), "utf-8"),
   ]);
 
-  const url = getRequestURL(event);
+  const ogBorderDataUri = `data:image/svg+xml;base64,${Buffer.from(ogBorderSvg).toString("base64")}`;
+  const logoDataUri = `data:image/svg+xml;base64,${Buffer.from(logoSvg).toString("base64")}`;
 
   return new ImageResponse(
     {
@@ -25,7 +31,7 @@ export default defineEventHandler(async (event) => {
           {
             type: "img",
             props: {
-              src: `${url.origin}/og-border.svg`,
+              src: ogBorderDataUri,
               style: {
                 position: "absolute",
                 top: 40,
@@ -58,7 +64,7 @@ export default defineEventHandler(async (event) => {
                       {
                         type: "img",
                         props: {
-                          src: `${url.origin}/icons/logo.svg`,
+                          src: logoDataUri,
                           width: 80,
                           height: 80,
                         },

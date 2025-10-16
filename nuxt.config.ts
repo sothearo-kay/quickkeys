@@ -12,6 +12,12 @@ export default defineNuxtConfig({
     "motion-v/nuxt",
   ],
 
+  $production: {
+    routeRules: {
+      "/og.png": { prerender: true },
+    },
+  },
+
   devtools: {
     enabled: true,
   },
@@ -33,6 +39,10 @@ export default defineNuxtConfig({
     classSuffix: "",
     preference: "default",
     storage: "cookie",
+  },
+
+  features: {
+    inlineStyles: true,
   },
 
   compatibilityDate: "2025-07-15",
@@ -66,6 +76,7 @@ export default defineNuxtConfig({
     defaults: {
       styles: ["normal"],
       subsets: ["latin"],
+      preload: true,
     },
   },
 });
