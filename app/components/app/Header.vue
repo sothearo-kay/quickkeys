@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { SITE_NAME } from "#shared/constants";
 import { AnimatePresence, motion } from "motion-v";
 
 const store = useTypingStore();
 const colorMode = useColorMode();
 
 const options = {
-  time: [15, 30, 60, 120],
-  theme: [
+  times: [15, 30, 60, 120],
+  themes: [
     "default",
     "dark",
     "serika",
@@ -18,7 +19,7 @@ const options = {
     "forest",
     "sunset",
   ],
-  mode: ["words", "sentences"],
+  modes: ["words", "sentences"],
 } as const;
 
 const isTransitioning = ref(false);
@@ -69,15 +70,15 @@ async function setMode(mode: TestMode) {
     :transition="{ duration: 0.3 }"
     class="relative z-20 flex flex-col gap-2 pt-6"
   >
-    <div class="flex items-baseline justify-between gap-6">
+    <div class="flex items-center justify-between gap-6">
       <div class="text-2xl font-bold text-primary">
-        quickkeys
+        {{ SITE_NAME }}
       </div>
 
       <div class="flex items-center gap-4 text-sm">
         <div class="flex items-center gap-2">
           <button
-            v-for="mode in options.mode"
+            v-for="mode in options.modes"
             :key="mode"
             class="font-medium capitalize transition-colors hover:text-primary"
             :class="getOptionClass(store.preferences.mode === mode)"
@@ -91,7 +92,7 @@ async function setMode(mode: TestMode) {
 
         <div class="flex items-center gap-2">
           <button
-            v-for="time in options.time"
+            v-for="time in options.times"
             :key="time"
             class="font-medium transition-colors hover:text-primary"
             :class="getOptionClass(store.preferences.timeLimit === time)"
@@ -103,10 +104,10 @@ async function setMode(mode: TestMode) {
       </div>
     </div>
 
-    <div class="flex justify-end">
-      <div class="flex flex-wrap items-center gap-2 text-sm">
+    <div class="ml-60 flex justify-end">
+      <div class="flex flex-wrap items-center justify-end gap-2 text-sm">
         <button
-          v-for="theme in options.theme"
+          v-for="theme in options.themes"
           :key="theme"
           class="font-medium capitalize transition-colors hover:text-primary"
           :class="getOptionClass(colorMode.preference === theme)"

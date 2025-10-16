@@ -1,6 +1,6 @@
 :root,
 .default {
-  --primary: oklch(0.55 0.2 230);
+  --primary: oklch(0.628 0.213 252);
   --highlight: oklch(0.55 0.2 20);
   --background: oklch(0.99 0 0);
   --foreground: oklch(0.2 0 0);

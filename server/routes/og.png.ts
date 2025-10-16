@@ -22,7 +22,6 @@ export default defineEventHandler(async (event) => {
           position: "relative",
         },
         children: [
-          // Dashed border overlay
           {
             type: "img",
             props: {
@@ -36,7 +35,6 @@ export default defineEventHandler(async (event) => {
               },
             },
           },
-          // Content
           {
             type: "div",
             props: {
@@ -61,8 +59,8 @@ export default defineEventHandler(async (event) => {
                         type: "img",
                         props: {
                           src: `${url.origin}/icons/logo.svg`,
-                          width: 64,
-                          height: 64,
+                          width: 80,
+                          height: 80,
                         },
                       },
                       {

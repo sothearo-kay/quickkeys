@@ -1,10 +1,10 @@
 <svg width="1120" height="550" viewBox="0 0 1120 550" xmlns="http://www.w3.org/2000/svg">
-  <path d="M 2 30 L 2 2 L 30 2" stroke="#000000" stroke-width="2.5" fill="none" stroke-opacity="0.2" stroke-linecap="square" />
-  <line x1="44" y1="2" x2="1076" y2="2" stroke="#000000" stroke-width="2.5" stroke-opacity="0.2" stroke-dasharray="18 12" stroke-linecap="square" />
-  <path d="M 1090 2 L 1118 2 L 1118 30" stroke="#000000" stroke-width="2.5" fill="none" stroke-opacity="0.2" stroke-linecap="square" />
-  <line x1="1118" y1="44" x2="1118" y2="506" stroke="#000000" stroke-width="2.5" stroke-opacity="0.2" stroke-dasharray="18 12" stroke-linecap="square" />
-  <path d="M 1118 520 L 1118 548 L 1090 548" stroke="#000000" stroke-width="2.5" fill="none" stroke-opacity="0.2" stroke-linecap="square" />
-  <line x1="1076" y1="548" x2="44" y2="548" stroke="#000000" stroke-width="2.5" stroke-opacity="0.2" stroke-dasharray="18 12" stroke-linecap="square" />
-  <path d="M 30 548 L 2 548 L 2 520" stroke="#000000" stroke-width="2.5" fill="none" stroke-opacity="0.2" stroke-linecap="square" />
-  <line x1="2" y1="506" x2="2" y2="44" stroke="#000000" stroke-width="2.5" stroke-opacity="0.2" stroke-dasharray="18 12" stroke-linecap="square" />
+  <path d="M 2 29 L 2 2 L 29 2" stroke="#000000" stroke-width="2.5" fill="none" stroke-opacity="0.2" stroke-linecap="square" />
+  <line x1="41" y1="2" x2="1085" y2="2" stroke="#000000" stroke-width="2.5" stroke-opacity="0.2" stroke-dasharray="18 12" stroke-linecap="square" />
+  <path d="M 1091 2 L 1118 2 L 1118 29" stroke="#000000" stroke-width="2.5" fill="none" stroke-opacity="0.2" stroke-linecap="square" />
+  <line x1="1118" y1="41" x2="1118" y2="515" stroke="#000000" stroke-width="2.5" stroke-opacity="0.2" stroke-dasharray="18 12" stroke-linecap="square" />
+  <path d="M 1118 521 L 1118 548 L 1091 548" stroke="#000000" stroke-width="2.5" fill="none" stroke-opacity="0.2" stroke-linecap="square" />
+  <line x1="1079" y1="548" x2="35" y2="548" stroke="#000000" stroke-width="2.5" stroke-opacity="0.2" stroke-dasharray="18 12" stroke-linecap="square" />
+  <path d="M 29 548 L 2 548 L 2 521" stroke="#000000" stroke-width="2.5" fill="none" stroke-opacity="0.2" stroke-linecap="square" />
+  <line x1="2" y1="509" x2="2" y2="35" stroke="#000000" stroke-width="2.5" stroke-opacity="0.2" stroke-dasharray="18 12" stroke-linecap="square" />
 </svg>
