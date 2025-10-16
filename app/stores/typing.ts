@@ -1,4 +1,6 @@
 export const useTypingStore = defineStore("typing", () => {
+  const activeElement = useActiveElement();
+
   const preferences = reactive<PreferencesState>({
     timeLimit: 30,
     mode: "sentences",
@@ -229,6 +231,7 @@ export const useTypingStore = defineStore("typing", () => {
     // Start timer on first keypress
     if (!hasStarted.value && key.length === 1) {
       startTimer();
+      activeElement.value?.blur();
     }
 
     switch (key) {
