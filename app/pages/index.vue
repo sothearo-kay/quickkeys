@@ -15,7 +15,11 @@ useSeoMeta({
   description: SITE_DESCRIPTION,
   ogTitle: SITE_NAME,
   ogDescription: SITE_DESCRIPTION,
+  ogSiteName: SITE_NAME,
+  ogUrl: url.href,
   twitterCard: "summary_large_image",
+  twitterTitle: SITE_NAME,
+  twitterDescription: SITE_DESCRIPTION,
   ogImage: `${url.origin}/og.png`,
   twitterImage: `${url.origin}/og.png`,
 });

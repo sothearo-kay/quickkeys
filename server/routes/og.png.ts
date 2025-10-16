@@ -1,15 +1,15 @@
 import { Buffer } from "node:buffer";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { SITE_DESCRIPTION, SITE_NAME } from "#shared/constants";
 import { ImageResponse } from "@vercel/og";
 
 export default defineEventHandler(async (_event) => {
+  const storage = useStorage("public");
+
   const [manropeFontSemiBold, manropeFontBold, ogBorderSvg, logoSvg] = await Promise.all([
     loadGoogleFont("Manrope:wght@600", SITE_DESCRIPTION),
     loadGoogleFont("Manrope:wght@700", `${SITE_NAME} Typing Speed Test`),
-    readFile(join(process.cwd(), "public/og-border.svg"), "utf-8"),
-    readFile(join(process.cwd(), "public/icons/logo.svg"), "utf-8"),
+    storage.getItem("og-border.svg") as Promise<string>,
+    storage.getItem("icons/logo.svg") as Promise<string>,
   ]);
 
   const ogBorderDataUri = `data:image/svg+xml;base64,${Buffer.from(ogBorderSvg).toString("base64")}`;
