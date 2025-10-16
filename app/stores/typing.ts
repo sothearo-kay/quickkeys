@@ -25,6 +25,11 @@ export const useTypingStore = defineStore("typing", () => {
     showResults: false,
   });
 
+  const keystrokeStats = {
+    correct: 0,
+    incorrect: 0,
+  };
+
   const activeWordRef = ref<HTMLDivElement | null>(null);
   const caretBlink = ref(true);
   const hasStarted = ref(false);
@@ -102,30 +107,8 @@ export const useTypingStore = defineStore("typing", () => {
   }
 
   function calculateResults() {
-    const typedHistory = toRaw(word.typedHistory);
-    const wordList = toRaw(word.wordList);
-
-    let correctChars = 0;
-    let incorrectChars = 0;
-
-    // Calculate correct and incorrect characters
-    for (let i = 0; i < typedHistory.length; i++) {
-      const typedWord = typedHistory[i] || "";
-      const actualWord = wordList[i] || "";
-
-      for (let j = 0; j < Math.max(typedWord.length, actualWord.length); j++) {
-        if (j < actualWord.length && typedWord[j] === actualWord[j]) {
-          correctChars++;
-        }
-        else if (j < typedWord.length) {
-          incorrectChars++;
-        }
-        else {
-          incorrectChars++;
-        }
-      }
-    }
-
+    const correctChars = keystrokeStats.correct;
+    const incorrectChars = keystrokeStats.incorrect;
     const totalChars = correctChars + incorrectChars;
     const accuracy = totalChars > 0 ? (correctChars / totalChars) * 100 : 0;
 
@@ -154,6 +137,10 @@ export const useTypingStore = defineStore("typing", () => {
     word.currWord = word.wordList[0] ?? "";
     time.timer = preferences.timeLimit;
     hasStarted.value = false;
+
+    keystrokeStats.correct = 0;
+    keystrokeStats.incorrect = 0;
+
     Object.assign(results, {
       wpm: 0,
       accuracy: 0,
@@ -168,6 +155,17 @@ export const useTypingStore = defineStore("typing", () => {
     // Limit extra characters to word length + 20
     const maxLength = word.currWord.length + 20;
     if (word.typedWord.length < maxLength) {
+      const currentPosition = word.typedWord.length;
+      const expectedChar = word.currWord[currentPosition];
+
+      // Track keystroke accuracy in real-time
+      if (char === expectedChar) {
+        keystrokeStats.correct++;
+      }
+      else {
+        keystrokeStats.incorrect++;
+      }
+
       word.typedWord += char;
     }
   }
@@ -179,6 +177,18 @@ export const useTypingStore = defineStore("typing", () => {
     else if (word.typedHistory.length > 0) {
       // Go back to the previous word
       const previousWord = word.typedHistory.pop() || "";
+
+      // Undo keystroke stats for the previous word to prevent double-counting
+      const actualWord = word.wordList[word.typedHistory.length] || "";
+      for (let i = 0; i < previousWord.length; i++) {
+        if (previousWord[i] === actualWord[i]) {
+          keystrokeStats.correct--;
+        }
+        else {
+          keystrokeStats.incorrect--;
+        }
+      }
+
       word.typedWord = previousWord;
       word.currWord = word.wordList[word.typedHistory.length] ?? "";
     }

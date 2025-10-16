@@ -7,6 +7,9 @@ await callOnce("typing-init", () => store.init());
 const currentWordIndex = computed(() => store.word.typedHistory.length);
 const extraLetters = computed(() => getExtraLetters(store.word));
 
+const typingContent = useTemplateRef("typingContent");
+const { height: typingContentHeight } = useElementSize(typingContent);
+
 const windowFocused = useWindowFocus();
 const isMounted = useMounted();
 
@@ -71,12 +74,11 @@ function setActiveWordRef(
 </script>
 
 <template>
-  <div class="relative grid place-items-center">
+  <div ref="typingContent" class="relative grid place-items-center">
     <div
-      class="fixed inset-0 z-10 grid cursor-pointer place-items-center bg-overlay backdrop-blur-lg transition-opacity duration-200"
-      :class="[
-        isMounted && !isFocused ? 'opacity-100' : 'pointer-events-none opacity-0',
-      ]"
+      class="fixed inset-x-0 z-10 grid cursor-pointer place-items-center bg-overlay backdrop-blur-lg transition-opacity duration-200"
+      :class="isMounted && !isFocused ? 'opacity-100' : 'pointer-events-none opacity-0'"
+      :style="{ height: `${typingContentHeight}px` }"
       @click="handleClick"
     >
       <div class="flex flex-col items-center text-foreground-muted">
@@ -87,7 +89,10 @@ function setActiveWordRef(
       </div>
     </div>
 
-    <div class="transform-gpu space-y-1 font-mono transition-all duration-200" :class="{ 'blur-sm': isMounted && !isFocused }">
+    <div
+      class="transform-gpu space-y-1 font-mono transition-all duration-200"
+      :class="{ 'blur-sm': isMounted && !isFocused }"
+    >
       <div class="ml-[5px] text-2xl font-bold text-highlight">
         {{ store.time.timer }}
       </div>

@@ -3,8 +3,10 @@ import { SITE_DESCRIPTION, SITE_NAME } from "#shared/constants";
 
 const store = useTypingStore();
 const keys = useMagicKeys();
+const activeElement = useActiveElement();
 
 whenever(keys.tab_enter!, async () => {
+  activeElement.value?.blur();
   await store.restart();
 });
 

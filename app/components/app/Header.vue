@@ -71,9 +71,11 @@ async function setMode(mode: TestMode) {
     class="relative z-20 flex flex-col gap-2 pt-6"
   >
     <div class="flex items-center justify-between gap-6">
-      <div class="text-2xl font-bold text-primary">
-        {{ SITE_NAME }}
-      </div>
+      <NuxtLink to="/">
+        <h1 class="text-2xl font-bold text-primary">
+          {{ SITE_NAME }}
+        </h1>
+      </NuxtLink>
 
       <div class="flex items-center gap-4 text-sm tracking-wide">
         <div class="flex items-center gap-2">
