@@ -28,7 +28,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="container grid min-h-dvh grid-rows-[auto_1fr_auto]">
+  <main class="container grid min-h-dvh grid-rows-[auto_1fr_auto] py-6">
     <AppHeader />
     <TypingResult v-if="store.results.showResults" />
     <TypingTest v-else />

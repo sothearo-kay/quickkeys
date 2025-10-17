@@ -68,16 +68,16 @@ async function setMode(mode: TestMode) {
   <motion.header
     :animate="{ opacity: store.isTyping ? 0 : 1 }"
     :transition="{ duration: 0.3 }"
-    class="relative z-20 flex flex-col gap-2 pt-6"
+    class="relative z-20 flex flex-col"
   >
-    <div class="flex items-center justify-between gap-6">
+    <div class="flex items-baseline justify-between gap-6">
       <NuxtLink to="/">
-        <h1 class="text-2xl font-bold text-primary">
+        <h1 class="text-2xl font-bold tracking-tight text-primary">
           {{ SITE_NAME }}
         </h1>
       </NuxtLink>
 
-      <div class="flex items-center gap-4 text-sm tracking-wide">
+      <div class="relative -top-0.5 flex items-center gap-4 text-sm tracking-wider">
         <div class="flex items-center gap-2">
           <button
             v-for="mode in options.modes"
@@ -92,7 +92,7 @@ async function setMode(mode: TestMode) {
 
         <div class="h-4 w-px bg-border" aria-hidden="true" />
 
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2">
           <button
             v-for="time in options.times"
             :key="time"
@@ -106,8 +106,8 @@ async function setMode(mode: TestMode) {
       </div>
     </div>
 
-    <div class="ml-50 flex justify-end">
-      <div class="flex flex-wrap items-center justify-end gap-2 text-sm tracking-wide">
+    <div class="mt-1 ml-50 flex justify-end">
+      <div class="flex flex-wrap items-center justify-end gap-2 text-sm tracking-wider">
         <button
           v-for="theme in options.themes"
           :key="theme"

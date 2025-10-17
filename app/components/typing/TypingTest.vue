@@ -97,7 +97,7 @@ function setActiveWordRef(
         {{ store.time.timer }}
       </div>
 
-      <div class="flex h-[calc(var(--font-size)*1.5*3)] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) select-none [--font-size:18pt]">
+      <div class="flex h-[calc(var(--font-size)*var(--line-height)*var(--lines))] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) leading-[--line-height] select-none [--font-size:18pt] [--line-height:1.6] [--lines:3]">
         <div
           v-for="(word, idx) in store.word.wordList"
           :key="`${word}-${idx}`"
