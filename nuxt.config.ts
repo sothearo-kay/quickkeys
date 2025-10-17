@@ -77,10 +77,6 @@ export default defineNuxtConfig({
       styles: ["normal"],
       subsets: ["latin"],
       preload: true,
-      fallbacks: {
-        "sans-serif": ["system-ui", "Arial"],
-        "monospace": ["ui-monospace", "Courier New"],
-      },
     },
   },
 });

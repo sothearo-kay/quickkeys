@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @utility container {
-  max-width: 80ch;
+  max-width: 48rem;
   margin-inline: auto;
   padding-inline: 1rem;
 }
@@ -21,9 +21,13 @@
   line-height: 1;
 }
 
+:root {
+  font-family: "JetBrains Mono", monospace;
+}
+
 @theme {
   --font-sans: "Manrope", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "Menlo", "Consolas", monospace;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 @theme inline {
@@ -43,6 +47,7 @@
   }
 
   body {
+    font-family: "Manrope", system-ui, sans-serif;
     @apply bg-background text-foreground;
   }
 

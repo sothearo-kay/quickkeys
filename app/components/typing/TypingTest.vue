@@ -93,7 +93,7 @@ function setActiveWordRef(
       class="transform-gpu space-y-1 font-mono transition-all duration-200"
       :class="{ 'blur-sm': isMounted && !isFocused }"
     >
-      <div class="ml-[5px] text-2xl font-bold text-highlight">
+      <div class="ml-[5px] inline-block min-w-[4ch] text-2xl font-bold text-highlight tabular-nums">
         {{ store.time.timer }}
       </div>
 

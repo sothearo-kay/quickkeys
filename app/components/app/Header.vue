@@ -15,9 +15,11 @@ const options = {
     "nord",
     "dracula",
     "monokai",
+    "catppuccin",
+    "gruvbox",
     "ocean",
     "forest",
-    "sunset",
+    "solarized",
   ],
   modes: ["words", "sentences"],
 } as const;
