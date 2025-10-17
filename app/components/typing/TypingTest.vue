@@ -97,7 +97,7 @@ function setActiveWordRef(
         {{ store.time.timer }}
       </div>
 
-      <div class="flex h-[calc(var(--font-size)*var(--line-height)*var(--lines))] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) leading-[--line-height] select-none [--font-size:18pt] [--line-height:1.6] [--lines:3]">
+      <div class="flex h-[calc(var(--font-size)*var(--line-height)*var(--lines))] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) leading-(--line-height) select-none [--font-size:18pt] [--line-height:1.5] [--lines:3]">
         <div
           v-for="(word, idx) in store.word.wordList"
           :key="`${word}-${idx}`"
@@ -113,7 +113,7 @@ function setActiveWordRef(
             layout-id="caret"
             class="caret"
             :class="{ blink: store.caretBlink }"
-            :style="{ left: `${store.word.typedWord.length * 0.6}em` }"
+            :style="{ left: `${store.word.typedWord.length}ch` }"
             :transition="{ type: 'tween', duration: 0.15, ease: [0.16, 1, 0.3, 1] }"
           >
             &vert;
@@ -168,7 +168,7 @@ function setActiveWordRef(
   position: absolute;
   left: 0;
   color: var(--highlight);
-  margin-left: -0.3em;
+  margin-left: -0.5ch;
 }
 
 .caret.blink {
