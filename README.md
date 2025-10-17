@@ -1,75 +1,46 @@
-# Nuxt Minimal Starter
+# Quickkeys
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+> Type fast. Track progress. Perfect your rhythm.
 
-## Setup
+![Preview](https://assets.sothearo.dev/images/projects/quickkeys.png)
 
-Make sure to install dependencies:
+A minimalist typing speed test with real-time WPM and accuracy tracking.
 
-```bash
-# npm
-npm install
+## TODO
 
-# pnpm
-pnpm install
+- [ ] Performance charts
+- [ ] Multiplayer rooms
+- [ ] Progress history
+- [ ] Leaderboards
 
-# yarn
-yarn install
+## Custom Themes
 
-# bun
-bun install
+Create your theme in `app/assets/css/themes.css`:
+
+```css
+.mytheme {
+  --primary: oklch(0.7 0.2 195); /* Correct characters */
+  --highlight: oklch(0.65 0.2 20); /* Incorrect characters */
+  --background: oklch(0.15 0 0); /* Background color */
+  --foreground: oklch(0.85 0 0); /* Regular text */
+}
 ```
 
-## Development Server
+Add to options in `app/components/app/Header.vue`:
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+```ts
+const options = {
+  times: [15, 30, 60, 120],
+  themes: [
+    "default",
+    "dark",
+    // ... other themes
+    "mytheme",
+  ],
+  modes: ["words", "sentences"],
+} as const;
 ```
 
-## Production
+## Contributing
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Contributions welcome! Report bugs, request features, or share custom themes.
