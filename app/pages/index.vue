@@ -28,10 +28,8 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="container grid h-dvh grid-rows-[auto_1fr_auto] pt-6">
-    <Header />
+  <div class="grid place-items-center py-16">
     <TypingResult v-if="store.results.showResults" />
     <TypingTest v-else />
-    <Footer />
-  </main>
+  </div>
 </template>

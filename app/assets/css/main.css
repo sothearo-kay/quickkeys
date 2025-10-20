@@ -28,6 +28,7 @@
 @theme {
   --font-sans: "Manrope", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+  --shadow-b: 0 4px 0;
 }
 
 @theme inline {
@@ -54,5 +55,10 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: var(--background);
   }
 }

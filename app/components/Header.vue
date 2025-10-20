@@ -80,13 +80,17 @@ async function setMode(mode: TestMode) {
           </h1>
         </NuxtLink>
 
-        <div class="flex items-center gap-4 text-muted">
-          <NuxtLink to="/" title="Solo Mode" class="grid transition-colors hover:text-primary" @click="store.reloadWordList">
-            <Icon name="lucide:keyboard" class="size-5" />
-          </NuxtLink>
-          <NuxtLink to="/multiplayer" title="Multiplayer Mode" class="grid transition-colors hover:text-primary">
-            <Icon name="lucide:users" class="size-5" />
-          </NuxtLink>
+        <div class="flex items-baseline gap-4 text-muted">
+          <Tooltip text="Solo" side="bottom">
+            <NuxtLink to="/" class="grid transition-colors hover:text-primary" @click="store.reloadWordList">
+              <Icon name="mynaui:keyboard" class="size-6" />
+            </NuxtLink>
+          </Tooltip>
+          <Tooltip text="Multiplayer" side="bottom">
+            <NuxtLink to="/multiplayer" class="grid transition-colors hover:text-primary">
+              <Icon name="mynaui:users-group" class="size-6" />
+            </NuxtLink>
+          </Tooltip>
         </div>
       </div>
 
