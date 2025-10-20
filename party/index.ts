@@ -9,13 +9,28 @@ export default class Server implements Party.Server {
   }
 
   onMessage(message: string, sender: Party.Connection) {
-    console.log(`Message from ${sender.id}: ${message}`);
-    // Broadcast to everyone including sender
-    this.room.broadcast(JSON.stringify({
-      type: "message",
-      from: sender.id,
-      data: message,
-    }));
+    try {
+      const data = JSON.parse(message);
+
+      if (data.type === "join") {
+        console.log(`${data.username} joined room ${this.room.id}`);
+        this.room.broadcast(JSON.stringify({
+          type: "system",
+          data: `${data.username} joined the room`,
+        }));
+      }
+      else if (data.type === "message") {
+        console.log(`${data.username}: ${data.text}`);
+        this.room.broadcast(JSON.stringify({
+          type: "message",
+          from: data.username,
+          data: data.text,
+        }));
+      }
+    }
+    catch (error) {
+      console.error("Error parsing message:", error);
+    }
   }
 }
 

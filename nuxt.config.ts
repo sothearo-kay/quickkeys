@@ -41,6 +41,12 @@ export default defineNuxtConfig({
     storage: "cookie",
   },
 
+  runtimeConfig: {
+    public: {
+      partykitHost: "",
+    },
+  },
+
   features: {
     inlineStyles: true,
   },
