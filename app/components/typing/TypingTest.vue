@@ -74,7 +74,7 @@ function setActiveWordRef(
 </script>
 
 <template>
-  <div ref="typingContent" class="relative grid place-items-center">
+  <div ref="typingContent" class="relative grid place-items-center py-16">
     <div
       class="fixed inset-x-0 z-10 grid cursor-pointer place-items-center bg-overlay backdrop-blur-lg transition-opacity duration-200"
       :class="isMounted && !isFocused ? 'opacity-100' : 'pointer-events-none opacity-0'"

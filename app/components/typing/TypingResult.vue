@@ -3,7 +3,7 @@ const store = useTypingStore();
 </script>
 
 <template>
-  <div class="grid place-items-center">
+  <div class="grid place-items-center py-16">
     <div class="space-y-8 text-center">
       <div class="space-y-4">
         <div class="space-y-2">

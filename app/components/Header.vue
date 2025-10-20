@@ -73,11 +73,22 @@ async function setMode(mode: TestMode) {
     class="relative z-20 flex flex-col"
   >
     <div class="flex items-baseline justify-between gap-6">
-      <NuxtLink to="/">
-        <h1 class="text-2xl font-bold tracking-tight text-primary">
-          {{ SITE_NAME }}
-        </h1>
-      </NuxtLink>
+      <div class="flex items-center gap-6">
+        <NuxtLink to="/" @click="store.reloadWordList">
+          <h1 class="text-2xl font-bold tracking-tight text-primary">
+            {{ SITE_NAME }}
+          </h1>
+        </NuxtLink>
+
+        <div class="flex items-center gap-4 text-muted">
+          <NuxtLink to="/" title="Solo Mode" class="grid transition-colors hover:text-primary" @click="store.reloadWordList">
+            <Icon name="lucide:keyboard" class="size-5" />
+          </NuxtLink>
+          <NuxtLink to="/multiplayer" title="Multiplayer Mode" class="grid transition-colors hover:text-primary">
+            <Icon name="lucide:users" class="size-5" />
+          </NuxtLink>
+        </div>
+      </div>
 
       <div class="relative -top-0.5 flex items-center gap-4 text-sm tracking-wider">
         <div class="flex items-center gap-2">
@@ -108,7 +119,7 @@ async function setMode(mode: TestMode) {
       </div>
     </div>
 
-    <div class="mt-1 ml-50 flex justify-end">
+    <div class="mt-1 ml-80 flex justify-end">
       <div class="flex flex-wrap items-center justify-end gap-2 text-sm tracking-wider">
         <button
           v-for="theme in options.themes"
