@@ -62,10 +62,10 @@ export const useTypingStore = defineStore("typing", () => {
   }
 
   async function init() {
-    if (word.wordList.length > 0)
-      return;
+    if (word.wordList.length === 0) {
+      await reloadWordList();
+    }
 
-    await reloadWordList();
     time.timer = preferences.timeLimit;
   }
 

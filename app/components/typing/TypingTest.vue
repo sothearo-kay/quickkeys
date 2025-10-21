@@ -80,9 +80,8 @@ function setActiveWordRef(
 
 <template>
   <div ref="typingContent" class="relative grid size-full place-items-center">
-    <div
-      class="fixed inset-x-0 z-10 grid cursor-pointer place-items-center bg-overlay backdrop-blur-lg transition-opacity duration-200"
-      :class="isMounted && !isFocused ? 'opacity-100' : 'pointer-events-none opacity-0'"
+    <Overlay
+      :show="isMounted && !isFocused"
       :style="{ height: `${typingContentHeight}px` }"
       @click="handleClick"
     >
@@ -92,7 +91,7 @@ function setActiveWordRef(
           Click here or press any key to focus
         </p>
       </div>
-    </div>
+    </Overlay>
 
     <div
       class="transform-gpu space-y-1 font-mono transition-all duration-200"

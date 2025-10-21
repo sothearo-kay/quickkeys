@@ -36,13 +36,14 @@ useSeoMeta({
         class="h-10 min-w-[255px] rounded-l-lg bg-foreground px-4 text-background shadow-b shadow-foreground/50 outline-none placeholder:font-medium placeholder:text-background/75"
         @keyup.enter="joinRoom"
       >
-      <button
-        class="grid size-10 place-items-center rounded-r-lg bg-primary text-background shadow-b shadow-primary/60 transition-all hover:opacity-90 active:translate-y-1 active:shadow-none disabled:cursor-not-allowed"
+      <Button
+        icon
+        class="rounded-l-none"
         :disabled="!roomCode.trim()"
         @click="joinRoom"
       >
         <Icon name="lucide:arrow-right" class="size-5" />
-      </button>
+      </Button>
     </div>
 
     <div class="my-2 text-3xl font-semibold">
@@ -67,11 +68,8 @@ useSeoMeta({
       </button>
     </div>
 
-    <button
-      class="h-10 rounded-lg bg-primary px-8 font-semibold tracking-wide text-background shadow-b shadow-primary/60 transition-all hover:opacity-90 active:translate-y-1 active:shadow-none"
-      @click="createRoom"
-    >
+    <Button @click="createRoom">
       Create New Room
-    </button>
+    </Button>
   </div>
 </template>
