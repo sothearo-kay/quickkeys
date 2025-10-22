@@ -39,6 +39,9 @@ importers:
       '@iconify-json/lucide':
         specifier: ^1.2.69
         version: 1.2.69
+      '@iconify-json/mynaui':
+        specifier: ^1.2.16
+        version: 1.2.16
       '@nuxt/eslint':
         specifier: ^1.9.0
         version: 1.9.0(@typescript-eslint/utils@8.46.0(eslint@9.37.0(jiti@2.6.1))(typescript@5.9.3))(@vue/compiler-sfc@3.5.22)(eslint-plugin-format@1.0.2(eslint@9.37.0(jiti@2.6.1)))(eslint@9.37.0(jiti@2.6.1))(magicast@0.3.5)(typescript@5.9.3)(vite@7.1.9(@types/node@24.7.2)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))
@@ -754,6 +757,9 @@ packages:
 
   '@iconify-json/lucide@1.2.69':
     resolution: {integrity: sha512-xOhNf74m+C+nSCObfEqYi34dXk1GMfMUcOB+gfqKY/bn0RcsPLinGfgouOvrUFEreDEFbCti7sdheTf5HESLTA==}
+
+  '@iconify-json/mynaui@1.2.16':
+    resolution: {integrity: sha512-SG50s+eHl+p19y+kntFTTt/erSiiBDgBIAMr9IxRSoOxwS9Sx06lFNDfa+RUAhEiKkjf4qBX3xK3lz8wiBhNBw==}
 
   '@iconify/collections@1.0.604':
     resolution: {integrity: sha512-1Qfk0jL6ATAcAk0dfQDIn3M+Slzee7/WCn0/FatrIUJ7Ua6pLlUPd4/mLk/CGYuBFCoK6LTb8YTDgDB36LVDwg==}
@@ -5882,6 +5888,10 @@ snapshots:
   '@humanwhocodes/retry@0.4.3': {}
 
   '@iconify-json/lucide@1.2.69':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/mynaui@1.2.16':
     dependencies:
       '@iconify/types': 2.0.0
 
