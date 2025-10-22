@@ -2,7 +2,7 @@
 
 > Type fast. Track progress. Perfect your rhythm.
 
-![Preview](https://assets.sothearo.dev/images/projects/quickkeys.png)
+![Screenshot](https://assets.sothearo.dev/images/projects/quickkeys/screenshot.png)
 
 A minimalist typing speed test with real-time WPM and accuracy tracking.
 
