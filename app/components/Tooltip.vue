@@ -30,6 +30,7 @@ const isHovered = ref(false);
         :animate="{ opacity: 1, scale: 1 }"
         :exit="{ opacity: 0, scale: 0.85 }"
         :transition="{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }"
+        layout-id="tooltip"
         class="tooltip"
         :class="side"
       >
