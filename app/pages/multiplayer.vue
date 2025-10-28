@@ -2,6 +2,10 @@
 import { SITE_DESCRIPTION, SITE_NAME } from "#shared/constants";
 import { motion } from "motion-v";
 
+definePageMeta({
+  hideShortcuts: true,
+});
+
 const roomCode = ref("");
 
 const modes = ["words", "sentences"] as const;

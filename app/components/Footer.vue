@@ -3,6 +3,9 @@ import { AUTHOR } from "#shared/constants";
 import { motion } from "motion-v";
 
 const store = useTypingStore();
+const route = useRoute();
+
+const showShortcuts = computed(() => !route.meta.hideShortcuts);
 </script>
 
 <template>
@@ -11,7 +14,10 @@ const store = useTypingStore();
     :transition="{ duration: 0.3 }"
     class="relative z-20 flex flex-col gap-6 pb-6"
   >
-    <div class="flex items-center justify-center gap-2 text-sm tracking-wider text-muted">
+    <div
+      class="flex items-center justify-center gap-2 text-sm tracking-wider text-muted transition-opacity duration-400"
+      :class="[showShortcuts ? 'opacity-100' : 'pointer-events-none opacity-0']"
+    >
       <kbd class="kbd">Tab</kbd>
       <span>&plus;</span>
       <kbd class="kbd">Enter</kbd>
