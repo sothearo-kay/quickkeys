@@ -7,9 +7,28 @@ const roomCode = ref("");
 const modes = ["words", "sentences"] as const;
 const selectedMode = ref<TestMode>("words");
 
-async function joinRoom() {}
+const { username, isUserSet, setUsername } = useUser();
+const showUserDialog = ref(false);
 
-async function createRoom() {}
+onMounted(() => {
+  if (!isUserSet.value) {
+    showUserDialog.value = true;
+  }
+});
+
+async function joinRoom() {
+  // TODO: Implement room joining logic
+  console.log("Joining room:", roomCode.value, "as", username.value);
+}
+
+async function createRoom() {
+  // TODO: Implement room creation logic
+  console.log("Creating room with mode:", selectedMode.value, "as", username.value);
+}
+
+function handleUsernameSubmit(name: string) {
+  setUsername(name);
+}
 
 useSeoMeta({
   title: `Multiplayer Mode - ${SITE_NAME}`,
@@ -32,7 +51,7 @@ useSeoMeta({
       <input
         v-model="roomCode"
         type="text"
-        placeholder="enter room code"
+        placeholder="Enter room code"
         class="h-10 min-w-[255px] rounded-l-lg bg-foreground px-4 text-background shadow-b shadow-foreground/50 outline-none placeholder:font-medium placeholder:text-background/75"
         @keyup.enter="joinRoom"
       >
@@ -71,5 +90,10 @@ useSeoMeta({
     <Button @click="createRoom">
       Create New Room
     </Button>
+
+    <UserDialog
+      v-model="showUserDialog"
+      @submit="handleUsernameSubmit"
+    />
   </div>
 </template>
