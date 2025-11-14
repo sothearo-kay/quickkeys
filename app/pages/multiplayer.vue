@@ -6,13 +6,17 @@ definePageMeta({
   hideShortcuts: true,
 });
 
-const roomCode = ref("");
+const room = reactive({
+  code: "",
+  error: "",
+});
 
 const modes = ["words", "sentences"] as const;
 const selectedMode = ref<TestMode>("words");
 
-const { username, isUserSet, setUsername } = useUser();
+const { isUserSet, setUsername } = useUser();
 const showUserDialog = ref(false);
+const router = useRouter();
 
 onMounted(() => {
   if (!isUserSet.value) {
@@ -20,14 +24,26 @@ onMounted(() => {
   }
 });
 
+whenever(() => room.code, () => {
+  if (room.error) {
+    room.error = "";
+  }
+});
+
 async function joinRoom() {
-  // TODO: Implement room joining logic
-  console.log("Joining room:", roomCode.value, "as", username.value);
+  const code = room.code.toUpperCase().trim();
+
+  if (!isValidRoomCode(code)) {
+    room.error = "Invalid room code";
+    return;
+  }
+
+  await router.push(`/room/${code}?action=join`);
 }
 
 async function createRoom() {
-  // TODO: Implement room creation logic
-  console.log("Creating room with mode:", selectedMode.value, "as", username.value);
+  const code = generateRoomCode();
+  await router.push(`/room/${code}?action=create`);
 }
 
 function handleUsernameSubmit(name: string) {
@@ -51,25 +67,38 @@ useSeoMeta({
       </h2>
     </div>
 
-    <div class="flex items-center gap-2">
-      <input
-        v-model="roomCode"
-        type="text"
-        placeholder="Enter room code"
-        class="h-10 min-w-[255px] rounded-l-lg bg-foreground px-4 text-background shadow-b shadow-foreground/50 outline-none placeholder:font-medium placeholder:text-background/75"
-        @keyup.enter="joinRoom"
-      >
-      <Button
-        icon
-        class="rounded-l-none"
-        :disabled="!roomCode.trim()"
-        @click="joinRoom"
-      >
-        <Icon name="lucide:arrow-right" class="size-5" />
-      </Button>
+    <div class="relative flex flex-col items-center gap-2">
+      <div class="flex items-center gap-2">
+        <input
+          v-model="room.code"
+          type="text"
+          placeholder="Enter room code"
+          class="h-10 min-w-[255px] rounded-l-lg bg-foreground px-4 text-background shadow-b shadow-foreground/50 outline-none placeholder:font-medium placeholder:text-background/75"
+          @keyup.enter="joinRoom"
+        >
+        <Button
+          icon
+          class="rounded-l-none"
+          :disabled="!room.code.trim()"
+          @click="joinRoom"
+        >
+          <Icon name="lucide:arrow-right" class="size-5" />
+        </Button>
+      </div>
+      <AnimatePresence>
+        <motion.div
+          v-if="room.error"
+          :initial="{ opacity: 0, y: -10 }"
+          :animate="{ opacity: 1, y: 0 }"
+          :exit="{ opacity: 0 }"
+          class="absolute -bottom-8 left-0 text-sm font-medium text-muted"
+        >
+          {{ room.error }}
+        </motion.div>
+      </AnimatePresence>
     </div>
 
-    <div class="my-2 text-3xl font-semibold">
+    <div class="mt-4 text-3xl font-semibold">
       or
     </div>
 
