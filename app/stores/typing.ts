@@ -38,23 +38,6 @@ export const useTypingStore = defineStore("typing", () => {
 
   const isTyping = computed(() => hasStarted.value && !results.isFinished);
 
-  async function loadWordList(type: string): Promise<string[]> {
-    try {
-      const module = await import(`~/data/wordlists/${type}.json`);
-      const data = module.default as string[];
-
-      if (type === "sentences") {
-        return shuffleArray(data).flatMap(sentence => sentence.split(" "));
-      }
-
-      return shuffleArray(data);
-    }
-    catch (error) {
-      console.error(`Failed to load word list for type "${type}":`, error);
-      return [];
-    }
-  }
-
   async function reloadWordList() {
     const words = await loadWordList(preferences.mode);
     word.wordList = words;
@@ -111,17 +94,12 @@ export const useTypingStore = defineStore("typing", () => {
   function calculateResults() {
     const correctChars = keystrokeStats.correct;
     const incorrectChars = keystrokeStats.incorrect;
-    const totalChars = correctChars + incorrectChars;
-    const accuracy = totalChars > 0 ? (correctChars / totalChars) * 100 : 0;
-
-    // WPM = (correct characters / 5) / time in minutes
-    // Standard word = 5 characters
-    const timeInMinutes = preferences.timeLimit / 60;
-    const wpm = Math.round((correctChars / 5) / timeInMinutes);
+    const wpm = calculateWPM(correctChars, preferences.timeLimit);
+    const accuracy = calculateAccuracy(correctChars, incorrectChars);
 
     Object.assign(results, {
       wpm,
-      accuracy: Math.round(accuracy),
+      accuracy,
       correctChars,
       incorrectChars,
       isFinished: true,
