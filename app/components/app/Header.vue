@@ -73,7 +73,7 @@ async function setMode(mode: TestMode) {
     class="relative z-20 flex flex-col"
   >
     <div class="flex items-baseline justify-between gap-6">
-      <NuxtLink to="/">
+      <NuxtLink to="/" @click="store.reloadWordList">
         <h1 class="text-2xl font-bold tracking-tight text-primary">
           {{ SITE_NAME }}
         </h1>
@@ -108,7 +108,7 @@ async function setMode(mode: TestMode) {
       </div>
     </div>
 
-    <div class="mt-1 ml-50 flex justify-end">
+    <div class="mt-1 ml-80 flex justify-end">
       <div class="flex flex-wrap items-center justify-end gap-2 text-sm tracking-wider">
         <button
           v-for="theme in options.themes"

@@ -54,6 +54,11 @@ function handleKeyDown(e: KeyboardEvent) {
   if (!isFocused.value)
     return;
 
+  // Allow Ctrl+Backspace for clearing current word
+  // Ignore all other keyboard shortcuts with modifier keys
+  if ((e.ctrlKey || e.altKey || e.metaKey) && e.key !== "Backspace")
+    return;
+
   e.preventDefault();
   store.handleKeyPress(e.key, e.ctrlKey);
 }
@@ -74,7 +79,7 @@ function setActiveWordRef(
 </script>
 
 <template>
-  <div ref="typingContent" class="relative grid place-items-center">
+  <div ref="typingContent" class="relative grid size-full place-items-center">
     <div
       class="fixed inset-x-0 z-10 grid cursor-pointer place-items-center bg-overlay backdrop-blur-lg transition-opacity duration-200"
       :class="isMounted && !isFocused ? 'opacity-100' : 'pointer-events-none opacity-0'"
@@ -90,14 +95,14 @@ function setActiveWordRef(
     </div>
 
     <div
-      class="transform-gpu space-y-1 font-mono transition-all duration-200"
+      class="space-y-2 font-mono transition-all duration-200"
       :class="{ 'blur-sm': isMounted && !isFocused }"
     >
       <div class="ml-[5px] inline-block min-w-[4ch] text-2xl font-bold text-highlight tabular-nums">
         {{ store.time.timer }}
       </div>
 
-      <div class="flex h-[calc(var(--font-size)*var(--line-height)*var(--lines))] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) leading-(--line-height) select-none [--font-size:18pt] [--line-height:1.5] [--lines:3]">
+      <div class="flex h-[calc(var(--font-size)*var(--line-height)*var(--lines))] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) leading-(--line-height) select-none [--font-size:18pt] [--line-height:1.7] [--lines:3]">
         <div
           v-for="(word, idx) in store.word.wordList"
           :key="`${word}-${idx}`"
