@@ -11,9 +11,6 @@ const room = reactive({
   error: "",
 });
 
-const modes = ["words", "sentences"] as const;
-const selectedMode = ref<TestMode>("words");
-
 const { isUserSet, setUsername } = useUser();
 const showUserDialog = ref(false);
 const router = useRouter();
@@ -38,12 +35,14 @@ async function joinRoom() {
     return;
   }
 
-  await router.push(`/room/${code}?action=join`);
+  sessionStorage.setItem("room-action", "join");
+  await router.push(`/room/${code}`);
 }
 
 async function createRoom() {
   const code = generateRoomCode();
-  await router.push(`/room/${code}?action=create`);
+  sessionStorage.setItem("room-action", "create");
+  await router.push(`/room/${code}`);
 }
 
 function handleUsernameSubmit(name: string) {
@@ -98,26 +97,8 @@ useSeoMeta({
       </AnimatePresence>
     </div>
 
-    <div class="mt-4 text-3xl font-semibold">
+    <div class="mt-1 text-3xl font-semibold">
       or
-    </div>
-
-    <div class="flex items-center gap-3 text-sm tracking-wider">
-      <button
-        v-for="mode in modes"
-        :key="mode"
-        class="relative rounded-lg px-4 py-2 font-semibold capitalize transition-colors hover:text-primary"
-        :class="selectedMode === mode ? 'text-primary' : 'text-foreground'"
-        @click="selectedMode = mode"
-      >
-        <motion.div
-          v-if="selectedMode === mode"
-          layout-id="mode-background"
-          class="absolute inset-0 -z-10 rounded-lg bg-primary/20"
-          :transition="{ type: 'spring', bounce: 0.2, duration: 0.5 }"
-        />
-        {{ mode }}
-      </button>
     </div>
 
     <Button @click="createRoom">

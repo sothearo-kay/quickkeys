@@ -1,141 +1,182 @@
 <script setup lang="ts">
+definePageMeta({ hideShortcuts: true });
+
 const route = useRoute();
 const router = useRouter();
 const roomCode = computed(() => route.params.code as string);
-const action = computed(() => route.query.action as string);
-const { username, isUserSet } = useUser();
+const { username } = useUser();
+const playerId = usePlayerId();
+const roomAction = useSessionStorage<"create" | "join" | null>("room-action", null);
 
-interface ChatMessage {
-  userId: string;
-  username: string;
-  text: string;
-}
+const myId = playerId;
 
-interface Player {
-  id: string;
-  username: string;
-  joinedAt: number;
-}
-
-const messages = ref<string[]>([]);
+const room = ref<RoomClientState | null>(null);
+const connectionError = ref("");
 const chatMessages = ref<ChatMessage[]>([]);
-const players = ref<Player[]>([]);
-const roomError = ref("");
-const myConnectionId = ref("");
-const isVerifying = ref(true);
-const roomExists = ref(false);
+const liveProgress = ref<Record<string, LiveProgress>>({});
 
-definePageMeta({
-  hideShortcuts: true,
+const now = useNow({ interval: 100 });
+
+const myPlayer = computed(() => room.value?.players.find(p => p.id === myId.value));
+const isHost = computed(() => room.value?.host === myId.value);
+const otherPlayers = computed(() => room.value?.players.filter(p => p.id !== myId.value) ?? []);
+
+const phase = computed(() => {
+  if (!room.value)
+    return "connecting";
+  if (!room.value.started)
+    return "lobby";
+  if (room.value.startedAt && now.value.getTime() < room.value.startedAt)
+    return "countdown";
+  if (myPlayer.value?.isFinished)
+    return "results";
+  return "racing";
 });
 
-const { status, send } = usePartySocket(roomCode, {
-  onConnected: (_ws) => {
-    if (action.value === "create") {
-      send({ type: "create" });
+const isRacing = useRaceMode();
+watch(phase, (p) => {
+  isRacing.value = p === "racing" || p === "countdown";
+}, { immediate: true });
+
+onUnmounted(() => {
+  isRacing.value = false;
+});
+
+const countdownSeconds = computed(() => {
+  if (!room.value?.startedAt)
+    return 3;
+  return Math.max(0, Math.ceil((room.value.startedAt - now.value.getTime()) / 1000));
+});
+
+const { send } = usePartySocket(roomCode, {
+  onConnected: () => {
+    const name = username.value;
+    if (!name)
+      return;
+    const action = roomAction.value;
+    roomAction.value = null; // consume so reload sees null
+    if (action === "create") {
+      send({ type: "create", data: { username: name, playerId: myId.value } });
+    }
+    else if (action === "join") {
+      send({ type: "join", data: { username: name, playerId: myId.value } });
+    }
+    else {
+      // null = reload — rejoin existing session
+      send({ type: "rejoin", data: { username: name, playerId: myId.value } });
     }
   },
-  onMessage: (ws, event, data) => {
-    if (data.type === "connected") {
-      // Store my connection ID
-      myConnectionId.value = data.id;
-
-      // When joining, check if room exists
-      if (action.value === "join") {
-        if (!data.roomExists) {
-          roomError.value = "Room does not exist";
-          setTimeout(() => router.push("/multiplayer"), 2000);
-          return;
-        }
-        // Room exists, send join message
-        send({
-          type: "join",
-          username: username.value,
-        });
-      }
+  onMessage: (_ws, _event, data) => {
+    if (data.type === "sync") {
+      room.value = data.room;
+      if (!data.room?.started)
+        liveProgress.value = {};
     }
-    else if (data.type === "room-created") {
-      // Room created successfully, now join it
-      send({
-        type: "join",
-        username: username.value,
-      });
-    }
-    else if (data.type === "system") {
-      messages.value.push(data.data);
-    }
-    else if (data.type === "players-update") {
-      players.value = data.players;
+    else if (data.type === "progress") {
+      liveProgress.value[data.playerId] = data.data;
     }
     else if (data.type === "message") {
-      chatMessages.value.push({
-        userId: data.userId,
-        username: data.from,
-        text: data.data,
-      });
+      chatMessages.value.push({ userId: data.userId, username: data.from, text: data.data });
     }
     else if (data.type === "error") {
-      roomError.value = data.message;
-      setTimeout(() => router.push("/multiplayer"), 2000);
+      connectionError.value = data.message;
+      setTimeout(() => router.push("/multiplayer"), 1000);
     }
   },
 });
 
 onMounted(() => {
-  if (!isUserSet.value) {
+  if (!username.value)
     router.push("/multiplayer");
-  }
 });
+
+function handleReady() {
+  send({ type: "ready" });
+}
+
+function handleUpdateSettings(settings: { mode?: string; timeLimit?: number }) {
+  send({ type: "settings", data: settings });
+}
+
+async function handleStart() {
+  const wordList = await loadWordList(room.value!.mode);
+  send({ type: "start", data: { wordList } });
+}
+
+function handleProgress(data: { progress: number; wpm: number; accuracy: number }) {
+  send({ type: "progress", data });
+}
+
+function handleFinish(results: ResultsState) {
+  send({ type: "finish", data: { results } });
+}
+
+function handleRestart() {
+  send({ type: "restart" });
+}
+
+function sendChatMessage(message: string) {
+  send({ type: "message", username: username.value ?? "", text: message });
+}
 
 function leaveRoom() {
   router.push("/multiplayer");
 }
-
-function sendChatMessage(message: string) {
-  send({
-    type: "message",
-    username: username.value,
-    text: message,
-  });
-}
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center gap-6 py-16">
-    <div class="flex flex-col items-center gap-4">
-      <Icon name="lucide:users" class="size-16 text-primary" />
-      <h2 class="text-4xl font-bold text-primary">
-        Room: {{ roomCode }}
-      </h2>
-      <div class="text-sm text-foreground/75">
-        Status: {{ status }}
-      </div>
-      <div v-if="roomError" class="text-sm font-medium text-red-500">
-        {{ roomError }}
-      </div>
+  <div class="grid place-items-center py-16">
+    <div v-if="phase === 'connecting'" class="flex flex-col items-center gap-3">
+      <Icon v-if="!connectionError" name="lucide:loader-circle" class="size-5 animate-spin text-foreground/30" />
+      <p class="text-sm font-medium" :class="connectionError ? 'text-red-500' : 'text-foreground/40'">
+        {{ connectionError || 'Connecting...' }}
+      </p>
     </div>
 
-    <div class="flex min-w-96 flex-col gap-2 rounded-lg bg-foreground/10 p-4">
-      <div class="text-sm font-semibold text-primary">
-        Messages:
-      </div>
-      <div v-if="messages.length === 0" class="text-sm text-foreground/50">
-        No messages yet
-      </div>
-      <div v-for="(msg, i) in messages" :key="i" class="text-sm text-foreground/75">
-        {{ msg }}
-      </div>
-    </div>
-
-    <Button @click="leaveRoom">
-      Leave Room
-    </Button>
-
-    <RoomChat
-      v-model="chatMessages"
-      :my-user-id="myConnectionId"
-      :players="players"
-      @send="sendChatMessage"
+    <RoomLobby
+      v-else-if="phase === 'lobby'"
+      :room="room!"
+      :my-id="myId"
+      :is-host="isHost"
+      @ready="handleReady"
+      @update-settings="handleUpdateSettings"
+      @start="handleStart"
+      @leave="leaveRoom"
     />
+
+    <RoomCountdown
+      v-else-if="phase === 'countdown'"
+      :seconds="countdownSeconds"
+    />
+
+    <RoomRace
+      v-else-if="phase === 'racing'"
+      :word-list="room!.wordList"
+      :time-limit="room!.timeLimit"
+      :started-at="room!.startedAt!"
+      :other-players="otherPlayers"
+      :live-progress="liveProgress"
+      @progress="handleProgress"
+      @finish="handleFinish"
+    />
+
+    <RoomResults
+      v-else-if="phase === 'results'"
+      :players="room!.players"
+      :my-id="myId"
+      :is-host="isHost"
+      @restart="handleRestart"
+      @leave="leaveRoom"
+    />
+
+    <Teleport to="body">
+      <RoomChat
+        v-if="room"
+        v-model="chatMessages"
+        :my-user-id="myId"
+        :players="room.players"
+        @send="sendChatMessage"
+      />
+    </Teleport>
   </div>
 </template>

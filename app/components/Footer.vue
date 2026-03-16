@@ -4,13 +4,15 @@ import { motion } from "motion-v";
 
 const store = useTypingStore();
 const route = useRoute();
+const isRacing = useRaceMode();
+const isHidden = computed(() => store.isTyping || isRacing.value);
 
 const showShortcuts = computed(() => !route.meta.hideShortcuts);
 </script>
 
 <template>
   <motion.footer
-    :animate="{ opacity: store.isTyping ? 0 : 1 }"
+    :animate="{ opacity: isHidden ? 0 : 1 }"
     :transition="{ duration: 0.3 }"
     class="relative z-20 flex flex-col gap-6 pb-6"
   >

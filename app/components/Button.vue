@@ -1,13 +1,13 @@
 <script setup lang="ts">
 interface Props {
-  variant?: "filled" | "outline";
+  variant?: "default" | "outline" | "secondary";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   icon?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
-  variant: "filled",
+  variant: "default",
   size: "md",
   disabled: false,
   icon: false,
@@ -26,7 +26,8 @@ const iconSizeClasses = {
 };
 
 const variantClasses = {
-  filled: "bg-primary text-background shadow-b shadow-primary/60 hover:opacity-90",
+  default: "bg-primary text-background shadow-b shadow-primary/60 hover:opacity-90",
+  secondary: "bg-foreground/10 text-foreground/70 shadow-b shadow-foreground/25 hover:bg-foreground/15 hover:text-foreground",
   outline: "border-2 border-border text-foreground hover:bg-foreground/5",
 };
 </script>
@@ -37,7 +38,7 @@ const variantClasses = {
     :class="[
       icon ? iconSizeClasses[size] : sizeClasses[size],
       variantClasses[variant],
-      variant === 'filled' && !disabled && 'active:translate-y-1 active:shadow-none',
+      (variant === 'default' || variant === 'secondary') && !disabled && 'active:translate-y-1 active:shadow-none',
       variant === 'outline' && !disabled && 'active:scale-95',
       icon && 'grid place-items-center',
     ]"

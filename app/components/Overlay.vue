@@ -28,7 +28,7 @@ function handleClick() {
 
 <template>
   <div
-    class="inset-x-0 grid place-items-center bg-overlay transition-opacity duration-200"
+    class="inset-0 grid place-items-center bg-overlay transition-opacity duration-200"
     :class="[
       position,
       blur && 'backdrop-blur-lg',

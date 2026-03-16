@@ -4,6 +4,10 @@ import { AnimatePresence, motion } from "motion-v";
 
 const store = useTypingStore();
 const colorMode = useColorMode();
+const route = useRoute();
+const hideControls = computed(() => !!route.meta.hideShortcuts);
+const isRacing = useRaceMode();
+const isHidden = computed(() => store.isTyping || isRacing.value);
 
 const options = {
   times: [15, 30, 60, 120],
@@ -12,13 +16,11 @@ const options = {
     "dark",
     "serika",
     "vscode",
-    "nord",
-    "dracula",
-    "monokai",
+    "latte",
+    "rosepine",
+    "tokyonight",
     "catppuccin",
-    "gruvbox",
-    "ocean",
-    "forest",
+    "ayu",
     "solarized",
   ],
   modes: ["words", "sentences"],
@@ -68,7 +70,7 @@ async function setMode(mode: TestMode) {
 
 <template>
   <motion.header
-    :animate="{ opacity: store.isTyping ? 0 : 1 }"
+    :animate="{ opacity: isHidden ? 0 : 1 }"
     :transition="{ duration: 0.3 }"
     class="relative z-20 flex flex-col"
   >
@@ -80,7 +82,7 @@ async function setMode(mode: TestMode) {
           </h1>
         </NuxtLink>
 
-        <div class="flex items-baseline gap-4 text-muted">
+        <div class="flex gap-4 text-muted">
           <Tooltip text="Solo" side="bottom">
             <NuxtLink to="/" class="grid transition-colors hover:text-primary" @click="store.reloadWordList">
               <Icon name="mynaui:keyboard" class="size-6" />
@@ -94,31 +96,33 @@ async function setMode(mode: TestMode) {
         </div>
       </div>
 
-      <div class="flex items-center gap-4 text-sm tracking-wider">
-        <div class="flex items-center gap-2">
-          <button
-            v-for="mode in options.modes"
-            :key="mode"
-            class="font-medium capitalize transition-colors hover:text-primary"
-            :class="getOptionClass(store.preferences.mode === mode)"
-            @click="setMode(mode)"
-          >
-            {{ mode }}
-          </button>
-        </div>
+      <div :class="hideControls ? 'cursor-not-allowed' : ''">
+        <div class="flex items-center gap-4 text-sm tracking-wider" :class="hideControls ? 'pointer-events-none opacity-60' : ''">
+          <div class="flex items-center gap-2">
+            <button
+              v-for="mode in options.modes"
+              :key="mode"
+              class="font-medium capitalize transition-colors hover:text-primary"
+              :class="getOptionClass(store.preferences.mode === mode)"
+              @click="setMode(mode)"
+            >
+              {{ mode }}
+            </button>
+          </div>
 
-        <div class="h-4 w-px bg-border" aria-hidden="true" />
+          <div class="h-4 w-px bg-border" aria-hidden="true" />
 
-        <div class="flex items-center gap-2">
-          <button
-            v-for="time in options.times"
-            :key="time"
-            class="font-medium transition-colors hover:text-primary"
-            :class="getOptionClass(store.preferences.timeLimit === time)"
-            @click="setTimeLimit(time)"
-          >
-            {{ time }}
-          </button>
+          <div class="flex items-center gap-2">
+            <button
+              v-for="time in options.times"
+              :key="time"
+              class="font-medium transition-colors hover:text-primary"
+              :class="getOptionClass(store.preferences.timeLimit === time)"
+              @click="setTimeLimit(time)"
+            >
+              {{ time }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
