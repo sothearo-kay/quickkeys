@@ -20,7 +20,7 @@ const hoveredIndex = ref<number | null>(null);
 </script>
 
 <template>
-  <div class="flex w-full max-w-lg flex-col gap-6">
+  <div class="mb-16 flex w-full max-w-lg flex-col gap-6">
     <h2 class="text-3xl font-bold text-primary">
       Results
     </h2>

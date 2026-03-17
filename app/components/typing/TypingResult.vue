@@ -3,45 +3,32 @@ const store = useTypingStore();
 </script>
 
 <template>
-  <div class="space-y-8 text-center">
-    <div class="space-y-4">
-      <div class="space-y-2">
-        <div class="text-sm font-medium text-muted">
-          WPM
-        </div>
-        <div class="text-6xl font-bold text-primary">
-          {{ store.results.wpm }}
-        </div>
+  <div class="mb-16 w-full max-w-2xl">
+    <div class="mb-2 flex items-end gap-6">
+      <div class="flex flex-col gap-0.5">
+        <span class="text-[10px] font-medium tracking-widest text-foreground-muted uppercase">wpm</span>
+        <span class="text-7xl leading-none font-bold text-primary tabular-nums">{{ store.results.wpm }}</span>
       </div>
 
-      <div class="space-y-2">
-        <div class="text-sm font-medium text-muted">
-          Accuracy
+      <div class="flex flex-col gap-0.5 pb-1">
+        <span class="text-[10px] font-medium tracking-widest text-foreground-muted uppercase">acc</span>
+        <span class="text-4xl leading-none font-bold text-foreground tabular-nums">
+          {{ store.results.accuracy }}<span class="text-xl font-normal text-foreground-muted">%</span>
+        </span>
+      </div>
+
+      <div class="ml-auto flex gap-5 pb-1 text-right">
+        <div class="flex flex-col gap-0.5">
+          <span class="text-[10px] font-medium tracking-widest text-foreground-muted uppercase">correct</span>
+          <span class="text-xl leading-none font-semibold text-primary tabular-nums">{{ store.results.correctChars }}</span>
         </div>
-        <div class="text-4xl font-bold text-foreground">
-          {{ store.results.accuracy }}&percnt;
+        <div class="flex flex-col gap-0.5">
+          <span class="text-[10px] font-medium tracking-widest text-foreground-muted uppercase">incorrect</span>
+          <span class="text-xl leading-none font-semibold text-highlight tabular-nums">{{ store.results.incorrectChars }}</span>
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-4 text-sm">
-      <div class="space-y-1">
-        <div class="text-muted">
-          Correct
-        </div>
-        <div class="text-lg font-semibold text-primary">
-          {{ store.results.correctChars }}
-        </div>
-      </div>
-
-      <div class="space-y-1">
-        <div class="text-muted">
-          Incorrect
-        </div>
-        <div class="text-lg font-semibold text-highlight">
-          {{ store.results.incorrectChars }}
-        </div>
-      </div>
-    </div>
+    <TypingWpmChart v-if="store.results.wpmHistory.length > 0" :data="store.results.wpmHistory" />
   </div>
 </template>

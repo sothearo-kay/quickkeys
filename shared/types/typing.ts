@@ -24,4 +24,5 @@ export interface ResultsState {
   incorrectChars: number;
   isFinished: boolean;
   showResults: boolean;
+  wpmHistory: number[];
 }

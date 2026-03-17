@@ -20,6 +20,7 @@ export function useRaceTyping() {
     incorrectChars: 0,
     isFinished: false,
     showResults: false,
+    wpmHistory: [],
   });
 
   const keystrokeStats = {
@@ -60,12 +61,14 @@ export function useRaceTyping() {
       incorrectChars: 0,
       isFinished: false,
       showResults: false,
+      wpmHistory: [],
     });
   }
 
   const { pause: pauseTimer, resume: resumeTimer, isActive } = useIntervalFn(
     () => {
       time.timer--;
+      results.wpmHistory.push(currentWpm.value);
       if (time.timer <= 0) {
         pauseTimer();
         calculateResults();
