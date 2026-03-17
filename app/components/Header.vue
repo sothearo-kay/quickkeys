@@ -76,7 +76,7 @@ async function setMode(mode: TestMode) {
   >
     <div class="flex items-center justify-between gap-6">
       <div class="flex items-center gap-6">
-        <NuxtLink to="/" @click="store.reloadWordList">
+        <NuxtLink to="/">
           <h1 class="text-2xl font-bold tracking-tight text-primary">
             {{ SITE_NAME }}
           </h1>
@@ -84,7 +84,7 @@ async function setMode(mode: TestMode) {
 
         <div class="flex gap-4 text-muted">
           <Tooltip text="Solo" side="bottom">
-            <NuxtLink to="/" class="grid transition-colors hover:text-primary" @click="store.reloadWordList">
+            <NuxtLink to="/" class="grid transition-colors hover:text-primary">
               <Icon name="mynaui:keyboard" class="size-6" />
             </NuxtLink>
           </Tooltip>

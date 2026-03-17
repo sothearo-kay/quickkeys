@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { motion } from "motion-v";
-
 const props = defineProps<{
   word: WordState;
   timer: number;
   caretBlink: boolean;
-  caretLayoutId?: string;
   disabled?: boolean;
 }>();
 
@@ -55,6 +52,22 @@ onKeyStroke(true, (e: KeyboardEvent) => {
 const currentWordIndex = computed(() => props.word.typedHistory.length);
 const extraLetters = computed(() => getExtraLetters(props.word));
 
+// Persistent caret positioned via offsetTop/offsetLeft + CSS 1ch units.
+// Avoids layoutId (crashes motion-v during Nuxt navigation) while keeping
+// the cross-word slide animation via CSS transitions.
+const caretStyle = ref<{ top: string; left: string } | null>(null);
+
+watchEffect(() => {
+  const el = activeWordRef.value;
+  if (!el)
+    return;
+  const typedLen = props.word.typedWord.length;
+  caretStyle.value = {
+    top: `${el.offsetTop}px`,
+    left: `calc(${el.offsetLeft}px + ${typedLen} * 1ch)`,
+  };
+}, { flush: "post" });
+
 function setActiveWordRef(el: Element | ComponentPublicInstance | null, idx: number) {
   if (idx === currentWordIndex.value) {
     activeWordRef.value = el as HTMLDivElement | null;
@@ -73,12 +86,10 @@ function handleFocusClick() {
     :show="isMounted && !isFocused"
     @click="handleFocusClick"
   >
-    <div class="flex flex-col items-center gap-3">
-      <div class="flex items-center justify-center rounded-full border border-foreground/10 bg-background/80 p-3 shadow-sm">
-        <Icon name="lucide:mouse-pointer-click" class="size-5 text-foreground/40" />
-      </div>
-      <p class="text-sm font-medium text-foreground/40">
-        click or press any key to focus
+    <div class="flex flex-col items-center text-foreground-muted">
+      <Icon name="lucide:mouse-pointer-click" class="size-8" />
+      <p class="mt-2 text-lg font-medium">
+        Click here or press any key to focus
       </p>
     </div>
   </Overlay>
@@ -91,7 +102,7 @@ function handleFocusClick() {
       {{ timer }}
     </div>
 
-    <div class="flex h-[calc(var(--font-size)*var(--line-height)*var(--lines))] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) leading-(--line-height) select-none [--font-size:18pt] [--line-height:1.7] [--lines:3]">
+    <div class="relative flex h-[calc(var(--font-size)*var(--line-height)*var(--lines))] flex-wrap items-center justify-start overflow-hidden text-(length:--font-size) leading-(--line-height) select-none [--font-size:18pt] [--line-height:1.7] [--lines:3]">
       <div
         v-for="(w, idx) in word.wordList"
         :key="`${w}-${idx}`"
@@ -102,17 +113,6 @@ function handleFocusClick() {
           wrong: isWordWrong(idx, currentWordIndex, word, extraLetters),
         }"
       >
-        <motion.span
-          v-if="idx === currentWordIndex"
-          :layout-id="caretLayoutId ?? 'caret'"
-          class="caret"
-          :class="{ blink: caretBlink }"
-          :style="{ left: `${word.typedWord.length}ch` }"
-          :transition="{ type: 'tween', duration: 0.15, ease: [0.16, 1, 0.3, 1] }"
-        >
-          &vert;
-        </motion.span>
-
         <span
           v-for="(char, charIdx) in w.split('')"
           :key="charIdx"
@@ -130,6 +130,15 @@ function handleFocusClick() {
           {{ char }}
         </span>
       </div>
+
+      <span
+        v-if="caretStyle"
+        class="caret"
+        :class="{ blink: caretBlink }"
+        :style="caretStyle"
+      >
+        &vert;
+      </span>
     </div>
   </div>
 </template>
@@ -159,9 +168,13 @@ function handleFocusClick() {
 
 .caret {
   position: absolute;
-  left: 0;
   color: var(--highlight);
   margin-left: -0.5ch;
+  pointer-events: none;
+  user-select: none;
+  transition:
+    top 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    left 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .caret.blink {
