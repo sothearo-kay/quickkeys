@@ -16,13 +16,12 @@ export interface Player {
 export interface RoomState {
   code: string;
   host: string;
-  players: Map<string, Player>;
+  players: Player[];
   mode: TestMode;
   timeLimit: number;
   wordList: string[];
   started: boolean;
   startedAt?: number;
-  finishedAt?: number;
 }
 
 // Client-side room state (players as array, sent via sync)
@@ -50,24 +49,19 @@ export interface LiveProgress {
 }
 
 export type RoomMessageType
-  = | "join"
-    | "leave"
+  = | "create"
+    | "join"
+    | "rejoin"
     | "ready"
-    | "unready"
+    | "settings"
     | "start"
     | "progress"
     | "finish"
-    | "sync";
-
-export interface RoomMessage {
-  type: RoomMessageType;
-  playerId: string;
-  data?: any;
-}
-
-export interface JoinRoomData {
-  username: string;
-}
+    | "restart"
+    | "message"
+    | "sync"
+    | "error"
+    | "connected";
 
 export interface ProgressData {
   progress: number;

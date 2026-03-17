@@ -10,7 +10,6 @@ export function useRaceTyping() {
 
   const time = reactive<TimeState>({
     timer: 0,
-    timerId: null,
   });
 
   const results = reactive<ResultsState>({

@@ -29,21 +29,21 @@ const { copied, copy } = useClipboard({ source: props.room.code });
 <template>
   <div class="flex w-full max-w-lg flex-col gap-6">
     <div class="flex flex-col items-center gap-2">
-      <span class="text-[10px] font-bold tracking-[0.18em] text-foreground/50 uppercase">Room Code</span>
+      <span class="text-xs font-bold tracking-[0.18em] text-muted-foreground uppercase">Room Code</span>
       <button
         class="group relative flex items-center gap-4 rounded-2xl border px-10 py-4 transition-all duration-200 hover:border-primary/40 hover:bg-primary/[0.03]"
         @click="copy(room.code)"
       >
-        <span class="font-mono text-[2.25rem] leading-none font-bold tracking-[0.2em] text-primary">
+        <span class="font-mono text-4xl leading-none font-bold tracking-[0.2em] text-primary">
           {{ room.code }}
         </span>
         <AnimatePresence mode="wait">
           <motion.span
             v-if="copied"
             key="check"
-            :initial="{ scale: 0.5, opacity: 0 }"
+            :initial="{ scale: 0.85, opacity: 0 }"
             :animate="{ scale: 1, opacity: 1 }"
-            :exit="{ scale: 0.5, opacity: 0 }"
+            :exit="{ scale: 0.85, opacity: 0 }"
             :transition="{ duration: 0.15 }"
           >
             <Icon name="lucide:check" class="size-4 text-primary" />
@@ -61,15 +61,15 @@ const { copied, copy } = useClipboard({ source: props.room.code });
           </motion.span>
         </AnimatePresence>
       </button>
-      <p class="text-xs text-foreground/30">
+      <p class="text-xs text-muted-foreground">
         Click to copy<span class="mx-1.5 inline-block">&middot;</span>share with friends
       </p>
     </div>
 
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
-        <span class="text-[10px] font-bold tracking-[0.18em] text-foreground/50 uppercase">Players</span>
-        <span class="text-[10px] font-bold tracking-[0.18em] text-foreground/50 uppercase tabular-nums">{{ room.players.length }}</span>
+        <span class="text-xs font-bold tracking-[0.18em] text-muted-foreground uppercase">Players</span>
+        <span class="text-xs font-bold tracking-[0.18em] text-muted-foreground uppercase tabular-nums">{{ room.players.length }}</span>
       </div>
       <div class="overflow-hidden rounded-xl border">
         <AnimatePresence>
@@ -82,32 +82,22 @@ const { copied, copy } = useClipboard({ source: props.room.code });
             :transition="{ duration: 0.2, delay: i * 0.04 }"
             class="relative flex items-center gap-3 px-4 py-3 not-first:border-t not-first:border-foreground/5"
           >
-            <motion.div
-              class="absolute top-0 left-0 h-full w-0.5 rounded-r-full"
-              :animate="{
-                opacity: player.isReady ? 1 : 0,
-                scaleY: player.isReady ? 1 : 0.3,
-              }"
-              :transition="{ duration: 0.25 }"
-              :style="{ backgroundColor: 'var(--primary)' }"
-            />
-
             <Avatar :name="player.username" :size="30" />
 
-            <span class="flex-1 text-sm leading-none font-medium">
+            <span class="flex-1 truncate text-sm leading-none font-medium">
               {{ player.username }}
             </span>
 
             <div class="flex items-center gap-2">
               <span
                 v-if="player.id === room.host"
-                class="rounded-md border border-foreground/20 px-1.5 py-0.5 text-[9px] font-bold tracking-[0.12em] text-foreground/50 uppercase"
+                class="text-[10px] font-semibold tracking-widest text-muted-foreground uppercase"
               >
                 host
               </span>
               <span
                 v-if="player.id === myId"
-                class="rounded-md border border-foreground/20 px-1.5 py-0.5 text-[9px] font-bold tracking-[0.12em] text-foreground/50 uppercase"
+                class="text-[10px] font-semibold tracking-widest text-muted-foreground uppercase"
               >
                 you
               </span>
@@ -120,7 +110,7 @@ const { copied, copy } = useClipboard({ source: props.room.code });
                   class="size-1.5 rounded-full transition-colors duration-300"
                   :style="{ backgroundColor: player.isReady ? 'var(--primary)' : 'var(--foreground)' }"
                 />
-                <span class="text-[11px] font-medium transition-colors duration-300" :class="player.isReady ? 'text-primary' : 'text-foreground/50'">
+                <span class="text-xs font-medium transition-colors duration-300" :class="player.isReady ? 'text-primary' : 'text-muted-foreground'">
                   {{ player.isReady ? 'ready' : 'waiting' }}
                 </span>
               </motion.div>
@@ -139,10 +129,10 @@ const { copied, copy } = useClipboard({ source: props.room.code });
         :transition="{ duration: 0.2 }"
         class="flex flex-col gap-2"
       >
-        <span class="text-[10px] font-bold tracking-[0.18em] text-foreground/50 uppercase">Settings</span>
+        <span class="text-xs font-bold tracking-[0.18em] text-muted-foreground uppercase">Settings</span>
         <div class="flex flex-col gap-3 rounded-xl border px-4 py-3">
           <div class="flex items-center justify-between">
-            <span class="text-sm text-foreground/50">Mode</span>
+            <span class="text-sm text-muted-foreground">Mode</span>
             <div class="flex items-center gap-0.5 rounded-lg bg-foreground/5 p-0.5">
               <button
                 v-for="mode in modes"
@@ -165,7 +155,7 @@ const { copied, copy } = useClipboard({ source: props.room.code });
           <div class="h-px bg-foreground/5" />
 
           <div class="flex items-center justify-between">
-            <span class="text-sm text-foreground/50">Time</span>
+            <span class="text-sm text-muted-foreground">Time</span>
             <div class="flex items-center gap-0.5 rounded-lg bg-foreground/5 p-0.5">
               <button
                 v-for="t in timeLimits"

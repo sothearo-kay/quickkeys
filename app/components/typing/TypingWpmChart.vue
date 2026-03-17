@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { useSpring } from "motion-v";
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   data: number[];
-}>();
+  showLabels?: boolean;
+}>(), { showLabels: true });
 
 const wrapperRef = ref<HTMLDivElement | null>(null);
 const dimensions = ref({ width: 0, height: 0 });
 
-const PAD = { top: 16, right: 4, bottom: 22, left: 0 };
+const PAD = computed(() => ({ top: 0, right: 4, bottom: props.showLabels ? 22 : 4, left: 0 }));
 
 useResizeObserver(wrapperRef, ([entry]) => {
   if (!entry)
@@ -19,11 +20,11 @@ useResizeObserver(wrapperRef, ([entry]) => {
   };
 });
 
-const W = computed(() => Math.max(0, dimensions.value.width - PAD.left - PAD.right));
-const H = computed(() => Math.max(0, dimensions.value.height - PAD.top - PAD.bottom));
+const W = computed(() => Math.max(0, dimensions.value.width - PAD.value.left - PAD.value.right));
+const H = computed(() => Math.max(0, dimensions.value.height - PAD.value.top - PAD.value.bottom));
 
 const yMin = computed(() => Math.floor(Math.min(...props.data) / 10) * 10);
-const yMax = computed(() => Math.ceil((Math.max(...props.data) + 5) / 10) * 10);
+const yMax = computed(() => Math.max(...props.data) + 5);
 
 function xScale(i: number) {
   return props.data.length < 2 ? 0 : (i / (props.data.length - 1)) * W.value;
@@ -100,8 +101,8 @@ function onMouseMove(e: MouseEvent) {
   if (!wrapperRef.value)
     return;
   const rect = wrapperRef.value.getBoundingClientRect();
-  const mx = e.clientX - rect.left - PAD.left;
-  const my = e.clientY - rect.top - PAD.top;
+  const mx = e.clientX - rect.left - PAD.value.left;
+  const my = e.clientY - rect.top - PAD.value.top;
 
   if (mx < 0 || mx > W.value || my < 0 || my > H.value) {
     onMouseLeave();
@@ -134,9 +135,9 @@ function onMouseLeave() {
       <div
         v-if="isHovering && springWpm !== null"
         class="pointer-events-none absolute z-10 -translate-x-1/2"
-        :style="`top: ${PAD.top - 4}px; left: clamp(20px, ${curX}px, calc(100% - 20px))`"
+        :style="`top: -4px; left: clamp(20px, ${curX}px, calc(100% - 20px))`"
       >
-        <div class="rounded-sm bg-primary px-2 py-1 text-[11px] leading-none font-bold whitespace-nowrap text-background">
+        <div class="rounded-sm bg-primary px-2 py-1 text-xs leading-none font-bold whitespace-nowrap text-background">
           {{ springWpm }} wpm
         </div>
       </div>
@@ -231,15 +232,17 @@ function onMouseLeave() {
         </g>
 
         <!-- X-axis labels -->
-        <text
-          v-for="tick in xTicks"
-          :key="`xl-${tick}`"
-          :x="xScale(tick)"
-          :y="H + 16"
-          :text-anchor="tick === 0 ? 'start' : tick === props.data.length - 1 ? 'end' : 'middle'"
-          font-size="10"
-          fill="var(--color-foreground-muted)"
-        >{{ tick + 1 }}s</text>
+        <template v-if="showLabels">
+          <text
+            v-for="tick in xTicks"
+            :key="`xl-${tick}`"
+            :x="xScale(tick)"
+            :y="H + 16"
+            :text-anchor="tick === 0 ? 'start' : tick === props.data.length - 1 ? 'end' : 'middle'"
+            font-size="10"
+            fill="var(--color-muted-foreground)"
+          >{{ tick + 1 }}s</text>
+        </template>
       </g>
     </svg>
   </div>

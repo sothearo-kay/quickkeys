@@ -86,7 +86,7 @@ function handleFocusClick() {
     :show="isMounted && !isFocused"
     @click="handleFocusClick"
   >
-    <div class="flex flex-col items-center text-foreground-muted">
+    <div class="flex flex-col items-center text-muted-foreground">
       <Icon name="lucide:mouse-pointer-click" class="size-8" />
       <p class="mt-2 text-lg font-medium">
         Click here or press any key to focus

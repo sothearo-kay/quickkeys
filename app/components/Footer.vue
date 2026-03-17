@@ -17,7 +17,7 @@ const showShortcuts = computed(() => !route.meta.hideShortcuts);
     class="relative z-20 flex flex-col gap-6 pb-6"
   >
     <div
-      class="flex items-center justify-center gap-2 text-sm tracking-wider text-muted transition-opacity duration-400"
+      class="flex items-center justify-center gap-2 text-sm tracking-wider text-muted-foreground transition-opacity duration-400"
       :class="[showShortcuts ? 'opacity-100' : 'pointer-events-none opacity-0']"
     >
       <kbd class="kbd">Tab</kbd>
@@ -27,7 +27,7 @@ const showShortcuts = computed(() => !route.meta.hideShortcuts);
       <span>restart test</span>
     </div>
 
-    <div class="flex items-center justify-center gap-4 text-sm tracking-wider text-muted">
+    <div class="flex items-center justify-center gap-4 text-sm tracking-wider text-muted-foreground">
       <a
         href="https://github.com/sothearo-kay/quickkeys"
         target="_blank"

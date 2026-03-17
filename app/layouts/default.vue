@@ -26,7 +26,7 @@ function dismissWarning() {
             <h2 class="text-2xl font-bold">
               Better experience on larger screens
             </h2>
-            <p class="text-muted">
+            <p class="text-muted-foreground">
               This typing test works best on tablets and desktop devices with a physical keyboard.
             </p>
           </div>

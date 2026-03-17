@@ -35,7 +35,7 @@ function handleSubmit() {
             <h2 class="text-2xl font-bold text-primary">
               Welcome!
             </h2>
-            <p class="text-center text-muted">
+            <p class="text-center text-muted-foreground">
               Before you join — what should we call you?
             </p>
           </div>

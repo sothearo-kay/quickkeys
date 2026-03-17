@@ -94,75 +94,73 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex w-full max-w-2xl flex-col gap-6">
-    <div class="flex flex-col gap-2">
-      <div
-        v-for="(player, i) in visibleStandings"
-        :key="player.id"
-        class="flex items-center gap-3"
-      >
-        <span
-          class="w-4 shrink-0 text-right text-xs font-semibold tabular-nums"
-          :class="i === 0 ? 'text-primary' : 'text-foreground/25'"
-        >{{ i + 1 }}</span>
+  <div class="flex w-full max-w-2xl flex-col gap-4">
+    <div class="flex flex-col">
+      <template v-for="(player, i) in visibleStandings" :key="player.id">
+        <div class="flex items-center gap-2.5 py-1">
+          <span
+            class="w-3.5 shrink-0 text-right text-xs font-semibold tabular-nums"
+            :class="i === 0 ? 'text-primary' : 'text-muted-foreground'"
+          >{{ i + 1 }}</span>
 
-        <div
-          class="shrink-0 rounded-full transition-all duration-300"
-          :class="i === 0 && standings.length > 1 ? 'ring-2 ring-primary/50 ring-offset-1 ring-offset-background' : ''"
-        >
-          <Avatar :name="player.username" :size="24" />
-        </div>
+          <div
+            class="shrink-0 rounded-full transition-all duration-300"
+            :class="i === 0 && standings.length > 1 ? 'ring-2 ring-primary/40 ring-offset-1 ring-offset-background' : ''"
+          >
+            <Avatar :name="player.username" :size="20" />
+          </div>
 
-        <div class="flex flex-1 flex-col gap-0.5">
-          <div class="flex items-baseline justify-between">
+          <div
+            class="flex w-24 shrink-0 items-center gap-0 text-xs font-medium"
+            :class="player.isMe ? 'text-foreground' : 'text-muted-foreground'"
+          >
+            <span class="truncate">{{ player.username }}</span>
+            <span v-if="player.isMe" class="shrink-0 font-normal text-muted-foreground"><span class="mx-1.5 inline-block">&middot;</span>you</span>
+          </div>
+
+          <div class="flex flex-1 items-center gap-1.5">
+            <div class="h-1 flex-1 overflow-hidden rounded-full bg-foreground/8">
+              <div
+                class="h-full rounded-full transition-[width] duration-300"
+                :class="player.isMe ? 'bg-primary' : (i === 0 ? 'bg-primary/50' : 'bg-foreground/20')"
+                :style="{ width: `${trackPct(player.progress)}%` }"
+              />
+            </div>
             <span
-              class="text-xs leading-none font-medium"
-              :class="player.isMe ? 'text-foreground' : 'text-foreground/50'"
-            >
-              {{ player.username }}
-              <span v-if="player.isMe" class="ml-1 text-[10px] font-normal text-foreground/30">you</span>
-            </span>
-            <span class="text-[11px] tabular-nums" :class="player.isFinished ? 'font-semibold text-primary' : 'text-foreground/35'">
-              {{ player.wpm }} wpm
-            </span>
-          </div>
-          <div class="h-1 w-full overflow-hidden rounded-full bg-foreground/8">
-            <div
-              class="h-full rounded-full transition-[width] duration-300"
-              :class="player.isMe ? 'bg-primary' : (i === 0 ? 'bg-primary/50' : 'bg-foreground/20')"
-              :style="{ width: `${trackPct(player.progress)}%` }"
-            />
+              class="w-12 shrink-0 text-right text-xs tabular-nums"
+              :class="player.isFinished ? 'font-semibold text-primary' : 'text-muted-foreground'"
+            >{{ player.wpm }} wpm</span>
           </div>
         </div>
-      </div>
+      </template>
 
       <template v-if="myStanding">
-        <div class="my-0.5 text-center text-xs text-foreground/20">
-          •••
+        <div class="my-1 flex items-center gap-1.5 px-6">
+          <div class="h-px flex-1 border-t border-dashed border-foreground/10" />
+          <span class="text-xs text-foreground/20">{{ myStanding.rank - MAX_VISIBLE }} more</span>
+          <div class="h-px flex-1 border-t border-dashed border-foreground/10" />
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-4 shrink-0 text-right text-xs font-semibold text-foreground/25 tabular-nums">
+        <div class="flex items-center gap-2.5 py-1">
+          <span class="w-3.5 shrink-0 text-right text-xs font-semibold text-muted-foreground tabular-nums">
             {{ myStanding.rank }}
           </span>
           <div class="shrink-0 rounded-full">
-            <Avatar :name="myStanding.player.username" :size="24" />
+            <Avatar :name="myStanding.player.username" :size="20" />
           </div>
-          <div class="flex flex-1 flex-col gap-0.5">
-            <div class="flex items-baseline justify-between">
-              <span class="text-xs leading-none font-medium text-foreground">
-                {{ myStanding.player.username }}
-                <span class="ml-1 text-[10px] font-normal text-foreground/30">you</span>
-              </span>
-              <span class="text-[11px] tabular-nums" :class="myStanding.player.isFinished ? 'font-semibold text-primary' : 'text-foreground/35'">
-                {{ myStanding.player.wpm }} wpm
-              </span>
-            </div>
-            <div class="h-1 w-full overflow-hidden rounded-full bg-foreground/8">
+          <div class="flex w-24 shrink-0 items-center text-xs font-medium text-foreground">
+            <span class="truncate">{{ myStanding.player.username }}</span>
+            <span class="shrink-0 font-normal text-muted-foreground"><span class="mx-1.5 inline-block">&middot;</span>you</span>
+          </div>
+          <div class="flex flex-1 items-center gap-1.5">
+            <div class="h-1 flex-1 overflow-hidden rounded-full bg-foreground/8">
               <div
                 class="h-full rounded-full bg-primary transition-[width] duration-300"
                 :style="{ width: `${trackPct(myStanding.player.progress)}%` }"
               />
             </div>
+            <span class="w-12 shrink-0 text-right text-xs tabular-nums" :class="myStanding.player.isFinished ? 'font-semibold text-primary' : 'text-muted-foreground'">
+              {{ myStanding.player.wpm }} wpm
+            </span>
           </div>
         </div>
       </template>
@@ -174,7 +172,6 @@ onMounted(() => {
       :timer="racing.time.timer"
       :caret-blink="racing.caretBlink.value"
       :disabled="racing.results.isFinished"
-      caret-layout-id="race-caret"
       @key-press="racing.handleKeyPress"
     />
   </div>

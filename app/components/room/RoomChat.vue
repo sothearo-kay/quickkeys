@@ -118,7 +118,7 @@ function isOwnMessage(msg: ChatMessage) {
           >
             <Avatar v-if="!isOwnMessage(msg)" :name="msg.username" :size="28" />
             <div class="flex flex-col gap-0.5" :class="isOwnMessage(msg) ? 'items-end' : 'items-start'">
-              <span v-if="!isOwnMessage(msg)" class="px-2 text-xs text-foreground/50">{{ msg.username }}</span>
+              <span v-if="!isOwnMessage(msg)" class="px-2 text-xs text-muted-foreground">{{ msg.username }}</span>
               <div
                 class="max-w-[220px] rounded-full px-3 py-2 text-sm break-words"
                 :class="isOwnMessage(msg) ? 'bg-primary text-background' : 'bg-foreground/10 text-foreground'"

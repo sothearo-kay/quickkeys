@@ -73,7 +73,13 @@ export default class Server implements Party.Server {
   }
 
   async onMessage(message: string, sender: Party.Connection): Promise<void> {
-    const msg = JSON.parse(message);
+    let msg: any;
+    try {
+      msg = JSON.parse(message);
+    }
+    catch {
+      return;
+    }
 
     switch (msg.type) {
       case "create": {
@@ -262,15 +268,17 @@ export default class Server implements Party.Server {
         room.started = false;
         room.startedAt = undefined;
         room.wordList = [];
-        room.players = room.players.map(p => ({
-          ...p,
-          isReady: false,
-          progress: 0,
-          wpm: 0,
-          accuracy: 0,
-          isFinished: false,
-          results: undefined,
-        }));
+        room.players = room.players
+          .filter(p => p.isConnected)
+          .map(p => ({
+            ...p,
+            isReady: false,
+            progress: 0,
+            wpm: 0,
+            accuracy: 0,
+            isFinished: false,
+            results: undefined,
+          }));
         await this.saveRoom(room);
         this.broadcast({ type: "sync", room });
         break;
@@ -302,12 +310,25 @@ export default class Server implements Party.Server {
       return;
 
     if (room.started) {
-      // Game in progress: mark as disconnected but keep in room so they can rejoin
+      // Game in progress: mark as disconnected so they can rejoin
       const player = room.players.find(p => p.id === playerId);
       if (player) {
         player.isConnected = false;
+        // Transfer host if needed
+        if (room.host === playerId) {
+          const next = room.players.find(p => p.id !== playerId && p.isConnected);
+          if (next) {
+            room.host = next.id;
+          }
+          else {
+            // No connected players left — clean up
+            await this.room.storage.delete("room");
+            await this.room.storage.delete("sessions");
+            return;
+          }
+        }
         await this.saveRoom(room);
-        // Don't broadcast — don't disrupt other players during race
+        this.broadcast({ type: "sync", room });
       }
     }
     else {

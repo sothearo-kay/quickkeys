@@ -39,7 +39,7 @@ const endRadius = computed(() => {
 });
 
 function getOptionClass(isActive: boolean) {
-  return isActive ? "text-primary" : "text-muted";
+  return isActive ? "text-primary" : "text-muted-foreground";
 }
 
 function setTimeLimit(time: number) {
@@ -82,7 +82,7 @@ async function setMode(mode: TestMode) {
           </h1>
         </NuxtLink>
 
-        <div class="flex gap-4 text-muted">
+        <div class="flex gap-4 text-muted-foreground">
           <Tooltip text="Solo" side="bottom">
             <NuxtLink to="/" class="grid transition-colors hover:text-primary">
               <Icon name="mynaui:keyboard" class="size-6" />

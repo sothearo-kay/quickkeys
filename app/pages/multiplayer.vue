@@ -90,7 +90,7 @@ useSeoMeta({
           :initial="{ opacity: 0, y: -10 }"
           :animate="{ opacity: 1, y: 0 }"
           :exit="{ opacity: 0 }"
-          class="absolute -bottom-8 left-0 text-sm font-medium text-muted"
+          class="absolute -bottom-8 left-0 text-sm font-medium text-muted-foreground"
         >
           {{ room.error }}
         </motion.div>

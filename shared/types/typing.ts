@@ -9,7 +9,6 @@ export interface WordState {
 
 export interface TimeState {
   timer: number;
-  timerId: ReturnType<typeof setTimeout> | null;
 }
 
 export interface PreferencesState {
