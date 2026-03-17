@@ -8,8 +8,8 @@ A minimalist typing speed test with real-time WPM and accuracy tracking.
 
 ## TODO
 
-- [ ] Performance charts
-- [ ] Multiplayer rooms
+- [x] Performance charts
+- [x] Multiplayer rooms
 - [ ] Progress history
 - [ ] Leaderboards
 

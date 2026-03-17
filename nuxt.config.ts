@@ -31,6 +31,7 @@ export default defineNuxtConfig({
         { rel: "icon", href: "/favicon.ico" },
       ],
     },
+    pageTransition: { name: "page", mode: "out-in" },
   },
 
   css: ["~/assets/css/main.css"],
@@ -39,6 +40,12 @@ export default defineNuxtConfig({
     classSuffix: "",
     preference: "default",
     storage: "cookie",
+  },
+
+  runtimeConfig: {
+    public: {
+      partykitHost: "",
+    },
   },
 
   features: {

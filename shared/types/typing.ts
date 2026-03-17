@@ -9,7 +9,6 @@ export interface WordState {
 
 export interface TimeState {
   timer: number;
-  timerId: ReturnType<typeof setTimeout> | null;
 }
 
 export interface PreferencesState {
@@ -24,4 +23,5 @@ export interface ResultsState {
   incorrectChars: number;
   isFinished: boolean;
   showResults: boolean;
+  wpmHistory: number[];
 }

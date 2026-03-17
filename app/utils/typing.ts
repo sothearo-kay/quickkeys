@@ -106,3 +106,46 @@ export function isWordWrong(
 
   return false;
 }
+
+/**
+ * Calculate WPM (Words Per Minute).
+ * Standard word = 5 characters
+ */
+export function calculateWPM(correctChars: number, timeInSeconds: number): number {
+  if (timeInSeconds <= 0)
+    return 0;
+
+  const timeInMinutes = timeInSeconds / 60;
+  return Math.round((correctChars / 5) / timeInMinutes);
+}
+
+/**
+ * Calculate accuracy percentage.
+ */
+export function calculateAccuracy(correctChars: number, incorrectChars: number): number {
+  const totalChars = correctChars + incorrectChars;
+  if (totalChars <= 0)
+    return 0;
+
+  return Math.round((correctChars / totalChars) * 100);
+}
+
+/**
+ * Load word list from JSON file and shuffle.
+ */
+export async function loadWordList(mode: TestMode): Promise<string[]> {
+  try {
+    const module = await import(`~/data/wordlists/${mode}.json`);
+    const data = module.default as string[];
+
+    if (mode === "sentences") {
+      return shuffleArray(data).flatMap(sentence => sentence.split(" "));
+    }
+
+    return shuffleArray(data);
+  }
+  catch (error) {
+    console.error(`Failed to load word list for mode "${mode}":`, error);
+    return [];
+  }
+}
