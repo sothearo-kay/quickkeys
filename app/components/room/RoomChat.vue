@@ -20,11 +20,6 @@ const isRacing = useRaceMode();
 // Show last 5 players as avatars in header
 const latestPlayers = computed(() => props.players.slice(-5));
 
-watch(isRacing, (racing) => {
-  if (racing)
-    isMinimized.value = true;
-});
-
 watch(() => messages.value.length, () => {
   if (!isMinimized.value) {
     nextTick(() => scrollToBottom());

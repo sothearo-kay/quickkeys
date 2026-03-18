@@ -13,7 +13,7 @@ const emit = defineEmits<{
 }>();
 
 const ranked = computed(() =>
-  [...props.players].sort((a, b) => b.wpm - a.wpm),
+  [...props.players, ...props.players, ...props.players, ...props.players, ...props.players, ...props.players, ...props.players, ...props.players].sort((a, b) => b.wpm - a.wpm),
 );
 
 const hoveredIndex = ref<number | null>(null);
@@ -31,7 +31,7 @@ function onLeave() {
 </script>
 
 <template>
-  <div class="mb-16 flex w-full max-w-lg flex-col gap-8">
+  <div class="mb-16 flex w-full max-w-lg flex-col gap-6">
     <div>
       <p class="mb-1 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
         Race finished

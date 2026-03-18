@@ -98,7 +98,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex w-full max-w-2xl flex-col gap-4">
+  <div class="flex w-full max-w-2xl flex-col gap-6">
     <div class="flex flex-col">
       <template v-for="(player, i) in visibleStandings" :key="player.id">
         <div class="flex items-center gap-2.5 py-1">

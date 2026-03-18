@@ -76,7 +76,7 @@ const stats = computed(() => {
         </div>
 
         <div v-if="player.results?.wpmHistory?.length" class="mx-4 my-3">
-          <TypingWpmChart :data="player.results.wpmHistory" :show-labels="false" class="h-20!" />
+          <TypingWpmChart :data="player.results.wpmHistory" :show-labels="false" class="h-18!" />
         </div>
       </div>
     </motion.div>
