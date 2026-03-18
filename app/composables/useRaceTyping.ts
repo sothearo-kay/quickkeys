@@ -1,6 +1,4 @@
 export function useRaceTyping() {
-  let _timeLimit = 0;
-
   const word = reactive<WordState>({
     currWord: "",
     typedWord: "",
@@ -10,6 +8,7 @@ export function useRaceTyping() {
 
   const time = reactive<TimeState>({
     timer: 0,
+    timeLimit: 0,
   });
 
   const results = reactive<ResultsState>({
@@ -32,7 +31,7 @@ export function useRaceTyping() {
   const hasStarted = ref(false);
 
   const currentWpm = computed(() => {
-    const elapsed = _timeLimit - time.timer;
+    const elapsed = time.timeLimit - time.timer;
     if (elapsed <= 0)
       return 0;
     return calculateWPM(keystrokeStats.correct, elapsed);
@@ -43,7 +42,7 @@ export function useRaceTyping() {
   );
 
   function init(wordList: string[], timeLimit: number) {
-    _timeLimit = timeLimit;
+    time.timeLimit = timeLimit;
     time.timer = timeLimit;
     word.wordList = wordList;
     word.currWord = wordList[0] ?? "";
@@ -103,10 +102,10 @@ export function useRaceTyping() {
   }
 
   function calculateResults() {
-    const elapsed = _timeLimit - time.timer;
+    const elapsed = time.timeLimit - time.timer;
     const correctChars = keystrokeStats.correct;
     const incorrectChars = keystrokeStats.incorrect;
-    const wpm = calculateWPM(correctChars, elapsed > 0 ? elapsed : _timeLimit);
+    const wpm = calculateWPM(correctChars, elapsed > 0 ? elapsed : time.timeLimit);
     const accuracy = calculateAccuracy(correctChars, incorrectChars);
 
     Object.assign(results, {

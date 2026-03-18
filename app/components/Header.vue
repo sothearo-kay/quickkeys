@@ -46,6 +46,7 @@ function getOptionClass(isActive: boolean) {
 function setTimeLimit(time: number) {
   store.preferences.timeLimit = time;
   store.time.timer = time;
+  store.time.timeLimit = time;
 }
 
 async function setTheme(theme: string, event: MouseEvent) {

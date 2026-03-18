@@ -9,6 +9,7 @@ export interface WordState {
 
 export interface TimeState {
   timer: number;
+  timeLimit: number;
 }
 
 export interface PreferencesState {

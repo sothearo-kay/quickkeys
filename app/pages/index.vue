@@ -4,7 +4,11 @@ import { SITE_DESCRIPTION, SITE_NAME } from "#shared/constants";
 const store = useTypingStore();
 const keys = useMagicKeys();
 
-// onMounted(() => store.restart());
+onMounted(() => {
+  if (store.results.isFinished)
+    store.restart();
+});
+
 const activeElement = useActiveElement();
 
 whenever(keys.tab_enter!, async () => {
@@ -31,20 +35,7 @@ useSeoMeta({
 
 <template>
   <div class="grid place-items-center py-16">
-    <Transition name="fade" mode="out-in">
-      <TypingResult v-if="store.results.showResults" />
-      <TypingTest v-else />
-    </Transition>
+    <TypingResult v-if="store.results.showResults" />
+    <TypingTest v-else />
   </div>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.1s var(--default-transition-timing-function);
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
