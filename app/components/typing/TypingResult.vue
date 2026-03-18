@@ -67,7 +67,7 @@ async function copyResultImage() {
         <Icon v-if="isCopying" name="lucide:loader-circle" class="size-4 animate-spin" />
         <Icon v-else-if="copied" name="lucide:check" class="size-4" />
         <Icon v-else name="lucide:image" class="size-4" />
-        {{ copied ? "Image Copied" : "Copy image" }}
+        {{ copied ? "Image copied" : "Copy image" }}
       </Button>
     </div>
   </div>

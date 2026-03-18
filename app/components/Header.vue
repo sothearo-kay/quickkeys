@@ -67,6 +67,10 @@ async function setMode(mode: TestMode) {
   await store.reloadWordList();
   store.restart();
 }
+
+async function goSolo() {
+  await store.reloadWordList();
+}
 </script>
 
 <template>
@@ -74,10 +78,11 @@ async function setMode(mode: TestMode) {
     :animate="{ opacity: isHidden ? 0 : 1 }"
     :transition="{ duration: 0.3 }"
     class="relative z-20 flex flex-col"
+    :class="{ invisible: isHidden }"
   >
     <div class="flex items-center justify-between gap-6">
       <div class="flex items-center gap-6">
-        <NuxtLink to="/">
+        <NuxtLink to="/" @click="goSolo">
           <h1 class="text-2xl font-bold tracking-tight text-primary">
             {{ SITE_NAME }}
           </h1>
@@ -85,7 +90,7 @@ async function setMode(mode: TestMode) {
 
         <div class="flex gap-4 text-muted-foreground">
           <Tooltip text="Solo" side="bottom">
-            <NuxtLink to="/" class="grid transition-colors hover:text-primary">
+            <NuxtLink to="/" class="grid transition-colors hover:text-primary" @click="goSolo">
               <Icon name="mynaui:keyboard" class="size-6" />
             </NuxtLink>
           </Tooltip>

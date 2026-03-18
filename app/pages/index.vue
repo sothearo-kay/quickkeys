@@ -31,7 +31,20 @@ useSeoMeta({
 
 <template>
   <div class="grid place-items-center py-16">
-    <TypingResult v-if="store.results.showResults" />
-    <TypingTest v-else />
+    <Transition name="fade" mode="out-in">
+      <TypingResult v-if="store.results.showResults" />
+      <TypingTest v-else />
+    </Transition>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s var(--default-transition-timing-function);
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

@@ -62,6 +62,7 @@ function isOwnMessage(msg: ChatMessage) {
     :transition="{ duration: 0.3 }"
     :style="{ pointerEvents: isRacing ? 'none' : 'auto' }"
     class="fixed right-6 bottom-6 z-30 flex w-[320px] flex-col rounded-xl border bg-background shadow-xs"
+    :class="{ invisible: isRacing }"
   >
     <button
       class="flex w-full items-center justify-between p-3 text-left"
