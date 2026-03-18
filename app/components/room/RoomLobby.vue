@@ -51,9 +51,9 @@ const { copied, copy } = useClipboard({ source: props.room.code });
           <motion.span
             v-else
             key="copy"
-            :initial="{ scale: 0.5, opacity: 0 }"
+            :initial="{ scale: 0.85, opacity: 0 }"
             :animate="{ scale: 1, opacity: 0.3 }"
-            :exit="{ scale: 0.5, opacity: 0 }"
+            :exit="{ scale: 0.85, opacity: 0 }"
             :transition="{ duration: 0.15 }"
             class="transition-opacity group-hover:opacity-60"
           >

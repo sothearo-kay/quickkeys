@@ -32,7 +32,6 @@ function onLeave() {
 
 <template>
   <div class="mb-16 flex w-full max-w-lg flex-col gap-8">
-    <!-- Header -->
     <div>
       <p class="mb-1 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
         Race finished
@@ -42,7 +41,6 @@ function onLeave() {
       </h2>
     </div>
 
-    <!-- Leaderboard -->
     <div class="flex flex-col">
       <div
         v-for="(player, i) in ranked"
@@ -96,7 +94,6 @@ function onLeave() {
       </div>
     </div>
 
-    <!-- Actions -->
     <div class="flex items-center gap-2">
       <Button variant="secondary" @click="emit('leave')">
         Leave

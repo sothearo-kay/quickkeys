@@ -86,4 +86,10 @@ export default defineNuxtConfig({
       preload: true,
     },
   },
+
+  icon: {
+    clientBundle: {
+      icons: ["lucide:check"],
+    },
+  },
 });

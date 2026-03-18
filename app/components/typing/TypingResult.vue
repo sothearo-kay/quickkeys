@@ -30,5 +30,12 @@ const store = useTypingStore();
     </div>
 
     <TypingWpmChart v-if="store.results.wpmHistory.length > 0" :data="store.results.wpmHistory" />
+
+    <div class="mt-6">
+      <Button class="inline-flex items-center gap-2" @click="store.restart">
+        <Icon name="lucide:rotate-ccw" class="size-4" />
+        Restart
+      </Button>
+    </div>
   </div>
 </template>

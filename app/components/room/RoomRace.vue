@@ -79,13 +79,17 @@ function trackPct(progress: number) {
   return Math.min(100, (progress / trackMax.value) * 100);
 }
 
-const MAX_VISIBLE = 5;
+const MAX_VISIBLE = 3;
 
-// Top N players; if I'm outside top N, pin me separately at the bottom
+// Top 3 always shown
 const visibleStandings = computed(() => standings.value.slice(0, MAX_VISIBLE));
-const myStanding = computed(() => {
-  const myIndex = standings.value.findIndex(p => p.isMe);
-  return myIndex >= MAX_VISIBLE ? { player: standings.value[myIndex]!, rank: myIndex + 1 } : null;
+
+// Last player always pinned when total > 3
+const lastStanding = computed(() => {
+  if (standings.value.length <= MAX_VISIBLE)
+    return null;
+  const last = standings.value[standings.value.length - 1]!;
+  return { player: last, rank: standings.value.length };
 });
 
 onMounted(() => {
@@ -134,32 +138,33 @@ onMounted(() => {
         </div>
       </template>
 
-      <template v-if="myStanding">
-        <div class="my-1 flex items-center gap-1.5 px-6">
+      <template v-if="lastStanding">
+        <div v-if="lastStanding.rank - MAX_VISIBLE - 1 > 0" class="my-1 flex items-center gap-1.5 px-6">
           <div class="h-px flex-1 border-t border-dashed border-foreground/10" />
-          <span class="text-xs text-foreground/20">{{ myStanding.rank - MAX_VISIBLE }} more</span>
+          <span class="text-xs text-foreground/20">{{ lastStanding.rank - MAX_VISIBLE - 1 }} more</span>
           <div class="h-px flex-1 border-t border-dashed border-foreground/10" />
         </div>
         <div class="flex items-center gap-2.5 py-1">
           <span class="w-3.5 shrink-0 text-right text-xs font-semibold text-muted-foreground tabular-nums">
-            {{ myStanding.rank }}
+            {{ lastStanding.rank }}
           </span>
           <div class="shrink-0 rounded-full">
-            <Avatar :name="myStanding.player.username" :size="20" />
+            <Avatar :name="lastStanding.player.username" :size="20" />
           </div>
-          <div class="flex w-24 shrink-0 items-center text-xs font-medium text-foreground">
-            <span class="truncate">{{ myStanding.player.username }}</span>
-            <span class="shrink-0 font-normal text-muted-foreground"><span class="mx-1.5 inline-block">&middot;</span>you</span>
+          <div class="flex w-24 shrink-0 items-center text-xs font-medium" :class="lastStanding.player.isMe ? 'text-foreground' : 'text-muted-foreground'">
+            <span class="truncate">{{ lastStanding.player.username }}</span>
+            <span v-if="lastStanding.player.isMe" class="shrink-0 font-normal text-muted-foreground"><span class="mx-1.5 inline-block">&middot;</span>you</span>
           </div>
           <div class="flex flex-1 items-center gap-1.5">
             <div class="h-1 flex-1 overflow-hidden rounded-full bg-foreground/8">
               <div
-                class="h-full rounded-full bg-primary transition-[width] duration-300"
-                :style="{ width: `${trackPct(myStanding.player.progress)}%` }"
+                class="h-full rounded-full transition-[width] duration-300"
+                :class="lastStanding.player.isMe ? 'bg-primary' : 'bg-foreground/20'"
+                :style="{ width: `${trackPct(lastStanding.player.progress)}%` }"
               />
             </div>
-            <span class="w-12 shrink-0 text-right text-xs tabular-nums" :class="myStanding.player.isFinished ? 'font-semibold text-primary' : 'text-muted-foreground'">
-              {{ myStanding.player.wpm }} wpm
+            <span class="w-12 shrink-0 text-right text-xs tabular-nums" :class="lastStanding.player.isFinished ? 'font-semibold text-primary' : 'text-muted-foreground'">
+              {{ lastStanding.player.wpm }} wpm
             </span>
           </div>
         </div>
