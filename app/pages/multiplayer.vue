@@ -14,6 +14,7 @@ const room = reactive({
 const { isUserSet, setUsername } = useUser();
 const showUserDialog = ref(false);
 const router = useRouter();
+const roomAction = useSessionStorage<"create" | "join" | null>("room-action", null);
 
 onMounted(() => {
   if (!isUserSet.value) {
@@ -35,13 +36,13 @@ async function joinRoom() {
     return;
   }
 
-  sessionStorage.setItem("room-action", "join");
+  roomAction.value = "join";
   await router.push(`/room/${code}`);
 }
 
 async function createRoom() {
   const code = generateRoomCode();
-  sessionStorage.setItem("room-action", "create");
+  roomAction.value = "create";
   await router.push(`/room/${code}`);
 }
 

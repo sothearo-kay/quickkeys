@@ -13,7 +13,7 @@ const emit = defineEmits<{
 }>();
 
 const ranked = computed(() =>
-  [...props.players, ...props.players, ...props.players, ...props.players, ...props.players, ...props.players, ...props.players, ...props.players].sort((a, b) => b.wpm - a.wpm),
+  [...props.players].sort((a, b) => b.wpm - a.wpm),
 );
 
 const hoveredIndex = ref<number | null>(null);

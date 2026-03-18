@@ -4,7 +4,7 @@ import { SITE_DESCRIPTION, SITE_NAME } from "#shared/constants";
 const store = useTypingStore();
 const keys = useMagicKeys();
 
-onMounted(() => store.restart());
+// onMounted(() => store.restart());
 const activeElement = useActiveElement();
 
 whenever(keys.tab_enter!, async () => {

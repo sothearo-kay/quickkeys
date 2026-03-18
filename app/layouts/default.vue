@@ -12,33 +12,37 @@ function dismissWarning() {
 </script>
 
 <template>
-  <main class="container grid h-dvh grid-rows-[auto_1fr_auto] pt-6">
-    <Teleport to="body">
-      <Overlay
-        :show="isMobile && showMobileWarning"
-        position="fixed"
-        :z-index="50"
-        :clickable="false"
-        class="h-dvh"
-      >
-        <div class="flex max-w-md flex-col items-center gap-6 text-center">
-          <div class="space-y-2">
-            <h2 class="text-2xl font-bold">
-              Better experience on larger screens
-            </h2>
-            <p class="text-muted-foreground">
-              This typing test works best on tablets and desktop devices with a physical keyboard.
-            </p>
-          </div>
-          <Button variant="secondary" @click="dismissWarning">
-            Dismiss
-          </Button>
-        </div>
-      </Overlay>
-    </Teleport>
+  <div class="contents">
+    <main class="container grid h-dvh grid-rows-[auto_1fr_auto] pt-6">
+      <Header />
+      <slot />
+      <Footer />
+    </main>
 
-    <Header />
-    <slot />
-    <Footer />
-  </main>
+    <ClientOnly>
+      <Teleport to="body">
+        <Overlay
+          :show="isMobile && showMobileWarning"
+          position="fixed"
+          :z-index="50"
+          :clickable="false"
+          class="h-dvh"
+        >
+          <div class="flex max-w-md flex-col items-center gap-6 text-center">
+            <div class="space-y-2">
+              <h2 class="text-2xl font-bold">
+                Better experience on larger screens
+              </h2>
+              <p class="text-muted-foreground">
+                This typing test works best on tablets and desktop devices with a physical keyboard.
+              </p>
+            </div>
+            <Button variant="secondary" @click="dismissWarning">
+              Dismiss
+            </Button>
+          </div>
+        </Overlay>
+      </Teleport>
+    </ClientOnly>
+  </div>
 </template>
