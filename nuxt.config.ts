@@ -89,7 +89,7 @@ export default defineNuxtConfig({
 
   icon: {
     clientBundle: {
-      icons: ["lucide:check"],
+      icons: ["lucide:check", "lucide:clipboard-copy", "lucide:loader-circle"],
     },
   },
 });

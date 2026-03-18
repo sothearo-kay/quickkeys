@@ -1,5 +1,32 @@
 <script setup lang="ts">
 const store = useTypingStore();
+const colorMode = useColorMode();
+
+const isCopying = ref(false);
+const copied = ref(false);
+
+async function copyResultImage() {
+  if (isCopying.value)
+    return;
+
+  const { wpm, accuracy, correctChars, incorrectChars, wpmHistory } = store.results;
+  const theme = colorMode.value;
+  const url = `/result.png?wpm=${wpm}&acc=${accuracy}&correct=${correctChars}&incorrect=${incorrectChars}&history=${wpmHistory.join(",")}&theme=${theme}`;
+
+  isCopying.value = true;
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+    copied.value = true;
+    setTimeout(() => {
+      copied.value = false;
+    }, 2000);
+  }
+  finally {
+    isCopying.value = false;
+  }
+}
 </script>
 
 <template>
@@ -31,10 +58,16 @@ const store = useTypingStore();
 
     <TypingWpmChart v-if="store.results.wpmHistory.length > 0" :data="store.results.wpmHistory" />
 
-    <div class="mt-6">
+    <div class="mt-6 flex gap-3">
       <Button class="inline-flex items-center gap-2" @click="store.restart">
         <Icon name="lucide:rotate-ccw" class="size-4" />
         Restart
+      </Button>
+      <Button variant="secondary" class="inline-flex items-center gap-2" :disabled="isCopying" @click="copyResultImage">
+        <Icon v-if="isCopying" name="lucide:loader-circle" class="size-4 animate-spin" />
+        <Icon v-else-if="copied" name="lucide:check" class="size-4" />
+        <Icon v-else name="lucide:image" class="size-4" />
+        {{ copied ? "Image Copied" : "Copy image" }}
       </Button>
     </div>
   </div>

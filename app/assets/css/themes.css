@@ -56,8 +56,8 @@
 }
 
 .ayu {
-  --primary: oklch(0.63 0.18 55);
-  --highlight: oklch(0.6 0.18 18);
+  --primary: oklch(0.68 0.2 75);
+  --highlight: oklch(0.55 0.2 12);
   --background: oklch(0.98 0 0);
   --foreground: oklch(0.32 0.02 240);
 }
@@ -67,4 +67,11 @@
   --highlight: oklch(0.54 0.22 25);
   --background: oklch(0.97 0.04 88);
   --foreground: oklch(0.3 0.05 192);
+}
+
+.flexoki {
+  --primary: oklch(0.58 0.1 188);
+  --highlight: oklch(0.44 0.16 26);
+  --background: oklch(0.99 0.01 88);
+  --foreground: oklch(0.09 0.01 60);
 }

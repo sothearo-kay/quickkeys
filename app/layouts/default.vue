@@ -30,7 +30,7 @@ function dismissWarning() {
               This typing test works best on tablets and desktop devices with a physical keyboard.
             </p>
           </div>
-          <Button variant="outline" @click="dismissWarning">
+          <Button variant="secondary" @click="dismissWarning">
             Dismiss
           </Button>
         </div>

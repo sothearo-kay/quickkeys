@@ -62,6 +62,14 @@
   line-height: 1;
 }
 
+@utility bg-primary-gradient {
+  background: linear-gradient(
+    to bottom,
+    oklch(from var(--primary) calc(l + 0.08) c h) 0%,
+    var(--primary) 100%
+  );
+}
+
 @utility scrollbar-custom {
   &::-webkit-scrollbar {
     width: 0.25rem;

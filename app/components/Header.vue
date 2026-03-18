@@ -22,6 +22,7 @@ const options = {
     "catppuccin",
     "ayu",
     "solarized",
+    "flexoki",
   ],
   modes: ["words", "sentences"],
 } as const;
