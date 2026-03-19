@@ -4,7 +4,7 @@ import { ImageResponse } from "@vercel/og";
 
 const W = 1200;
 const H = 630;
-const PAD = 40;
+const PAD = 60;
 const CONTENT_W = W - PAD * 2;
 
 const CHART_H = 250;
@@ -271,7 +271,7 @@ export default defineEventHandler(async (event) => {
               style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: "12px" },
               children: [
                 { type: "span", props: { style: { fontSize: "16px", fontWeight: 600, color: muted }, children: "wpm.sothearo.dev" } },
-                { type: "span", props: { style: { fontSize: "16px", fontWeight: 600, color: muted }, children: "WPM trend" } },
+                { type: "span", props: { style: { fontSize: "16px", fontWeight: 600, color: muted }, children: "wpm trend" } },
               ],
             },
           },
